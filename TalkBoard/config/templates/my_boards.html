@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}あなたの投稿一覧{% endblock %}
+
+{% block content %}
+    <section>
+    <h1>■あなたの投稿一覧</h1>
+    <form method="gGET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
+    <div class="col-md-3">
+        <input type="text" name="query" id="id_query" pleceholder="検索">
+    </div>
+    <div class="col-md-2">
+        <select name="search_type" class="form-select">
+            <option value="partial">部分一致</option>
+            <option value="prefix">前方一致</option>
+            <option value="suffix">後方一致</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button type="submit" class="btn btn-light">検索</button>
+        </div>
+    </form>
+    <table class="table">
+        <colgroup>
+            <col style="width: 10%;">
+            <col style="width: 50%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">掲示板ID</th>
+                <th scope="col">タイトル</th>
+                <th scope="col">投稿日時</th>
+                <th scope="col">更新日時</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for board in boards %}
+            <tr>
+                <td scope="col">{{ board.id }}</td>
+                <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</td>
+                <td scope="col">{{ board.created_at }}</td>
+                <td scope="col">{{ board.updated_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <a href="{% url 'app:new' %}" class="btn btn-primary">新規投稿画面</a>
+        <a href="{% url 'app:index' %}" class="btn btn-primary">みんなの投稿一覧</a>
+    </section>
+{% endblock %}

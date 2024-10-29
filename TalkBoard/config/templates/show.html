@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ board.title }}の詳細画面{% endblock %}
+
+{% block content %}
+    <section>
+        <form action="{% url 'app:index' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">戻る</button>
+        </form>
+        <h2>■{{ board.title }}</h2>
+        <h4>{{ board.content }}</h4>
+        {% if board.image %}
+            <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
+        {% endif %}
+        <p>{{ board.user }}さんの投稿</p>
+        <p>
+            作成：{{ board.created_at|date:"Y/m/d H:i" }}</br>
+            更新：{{ board.updated_at|date:"Y/m/d H:i" }}
+        </p>
+        {% if request.user == board.user %}
+        <div class="d-inline-block">
+            <a href="{% url 'app:edit' pk=board.id %}" class="btn btn-primary">編集する</a>
+        </div>
+        <div class="d-inline-block">
+            <form action="{% url 'app:delete' pk=board.id %}" method="post" class="d-inline" onsubmit="return confirm('本当に削除しますか？');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="btn btn-danger">削除する</button>
+            </form>
+        </div>
+            <!-- <a href="{% url 'app:edit' pk=board.id %}" class="btn btn-primary">編集する</a>
+            <form action="{% url 'app:delete' pk=board.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="btn btn-danger">削除する</button>
+            </form> -->
+
+        {% endif %}
+    </section>
+
+    <section class="mt-3">
+        <h3>■コメントを追加する</h3>
+        <form action="{% url 'app:comment_create' pk=board.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+            <textarea name="content" id="id_content" class="form-control" placeholder="テキストを入力"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">コメントする</button>
+        </form>
+    </section>
+
+    <section>
+        <h3>■コメント一覧</h3>
+        <ul class="list-unstyled">
+            {% for comment in comments %}
+                <li class="mb-3">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <strong>
+                                {% if request.user == comment.user %}
+                                ◆You◆
+                                {% endif %}
+                                {{ comment.user.username }}</strong>さん　- {{ comment.created_at|date:"Y/m/d H:i"}}
+                        </div>
+                        <div class="card-body">
+                        <p class="card-text">{{ comment.content }}</p>
+                        </div>
+                        <div class="card-footer">
+                            {% if request.user == comment.user %}
+                                <form action="{% url 'app:comment_delete' board.pk comment.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">削除する</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="text-muted">コメントはまだありません。</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}    

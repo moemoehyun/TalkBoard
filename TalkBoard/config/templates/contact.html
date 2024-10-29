@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}お問い合わせ{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="row justify-content-center">
+      <div class="col-md-6">
+          <h2>■お問い合わせ</h2>
+          <a>掲示板アプリをご利用いただきありがとうございます。<br/>
+          お問い合わせではこのアプリへの意見、要望を受け付けています。</a>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3 row">
+              <label for="id_email" class="col-sm-4 col-form-label">メールアドレス</label></br>
+              <div class="col-sm-8">
+                {{ form.email }}(問い合わせ先のメールアドレスを入力)
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="id_title" class="col-sm-4 col-form-label">件名</label></br>
+              <div class="col-sm-8">
+                {{ form.title }}
+              </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="id_massage" class="col-sm-4 col-form-label">内容</label></br>
+                <div class="col-sm-8">
+                  {{ form.message }}
+                </div>
+              </div>
+            <div class="mb-3 row">
+              <civ class="col-sm-8 offset-sm-4">
+                  <button type="submit" class="btn btn-primary">送信</button>
+              </div>
+            </div>
+          </form>
+      </div>
+  </div>
+</section>
+{% endblock %}
+

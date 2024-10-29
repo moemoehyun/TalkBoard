@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>{% block title %}掲示板{% endblock %}</title>
+     {% comment %} BootstrapのCDN読み込み {% endcomment %}
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+     {% comment %} Bootstrapのアイコン読み込み {% endcomment %}
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+     {% comment %} CSSファイル読み込み {% endcomment %}
+     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+</head>
+<body>
+    <header class="bg-success">
+        <div class="container">
+            <div class="pt-3 pb-1 mb-2 text-white d-flex justify-content-between align-items-center flex-wrap">
+            <img src="{% static 'images/icon.png' %}" alt="アイコン" width="70" class="me-2">
+            <h1 class="display-4">なかま掲示板</h1>
+            {% if user.is_authenticated %}
+            <div>
+                <p class="text-light">「{{ user.username }}」でログイン中</p>
+            </div>
+            <div>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                    <button type="submit" class="btn btn-light">ログアウト</button>
+                </form>
+                <a href="{% url 'app:contact' %}" class="btn btn-light">お問い合わせ</a>
+            </div>
+            {% else %}
+                <a href="{% url 'signup' %}" class="btn btn-light">サインアップ</a>
+                <a href="{% url 'login' %}" class="btn btn-light">ログイン</a>
+                <a href="{% url 'app:contact' %}" class="btn btn-light">お問い合わせ</a>
+            {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- 各ページの内容 -->
+    <main>
+        <div class="container">
+            <div class="mb-2">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+    <footer class="bg-secondary">
+        <div class="container">
+            <div class="pt-3 pb-1 mb-2 text-white">
+                <p class="trxt-center">&copy; 2024 つつじ掲示板</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

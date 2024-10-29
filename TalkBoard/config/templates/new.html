@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}新規投稿{% endblock %}
+
+{% block content %}
+    <section>
+        <h2>■新規投稿画面</h2>
+        <form action="{% url 'app:create' %}" method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">タイトル</label></br>
+            {{ form.title }}
+            </div>
+            <div class="mb-3">
+            <label for="{{ form.content.id_for_label }}">内容</label></br>
+            {{ form.content }}
+            </div>
+            <div class="mb-3">
+                {{ form.image }}
+            </div>
+            <button type="submit" class="btn btn-success">投稿する</button>
+            <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>
+        </form>
+    </section>
+{% endblock %}    

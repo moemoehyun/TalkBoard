@@ -1,0 +1,20 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+    list-style-position: inside;
+}
+
+.bg-success {
+    background-color: #3688e0 !important;
+    color: #363636;
+}
+
+
+body {
+    font-size: 16px;
+    color: #363636;
+    font-family: "Hiragino kaku Gothic ProN", sans-serif;
+}

@@ -1,0 +1,9 @@
+{% if sort_field == field %}
+    {% if irection == 'asc' %}
+            <i class="bi bi-arrow-down-circle-fill"></i>
+    {% else %}
+    <i class="bi bi-arrow-up-circle-fill"></i>
+    {% endif %}
+{% else %}
+    <i class="bi bi-dash-circle-fill"></i>
+{% endif %}

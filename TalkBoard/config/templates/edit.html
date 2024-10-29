@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{ board.title }の編集画面{% endblock %}
+
+{% block content %}
+    <section>
+        <h2>■「{ board.title }」の編集</h2>
+        <form action="{% url 'app:update' pk=board.id %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.title.id_for_label }}" class="form-label">タイトル</label></br>
+                {{ form.title }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.content.id_for_label }}" class="form-label">内容</label></br>
+                {{ form.content }}
+            </div>
+            <button type="submit" class="btn btn-success">掲示板を更新する</button>
+            <a href="{% url 'app:show' pk=board.id %}" class="btn btn-primary">詳細ページに戻る</a>
+        </form>
+    </section>
+{% endblock %}
