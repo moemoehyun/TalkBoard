@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}新規投稿{% endblock %}
 
 {% block content %}
+<body class="dark">
     <section>
         <h2>■新規投稿画面</h2>
         <form action="{% url 'app:create' %}" method="post" enctype="multipart/form-data" class="mt-4">
@@ -25,4 +27,6 @@
             <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>
         </form>
     </section>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+</body>
 {% endblock %}    

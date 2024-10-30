@@ -1,11 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}お問い合わせ完了{% endblock %}
 
 {% block content %}
+<body class="dark">
 <section class="message">
     <p>お問い合わせありがとうございます。</p>
     <p>後日、担当者よりご連絡させていただきますので、しばらくお待ちください。</p>
     <a href="{% url 'app:index' %}" class="btn btn-primary">ホームに戻る</a>
 </section>
+<script src="{% static 'js/darkmode.js' %}"></script>
+</body>
 {% endblock %}
