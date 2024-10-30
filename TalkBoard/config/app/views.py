@@ -240,6 +240,9 @@ def profile(request):
     user = request.user
     return render(request, "accounts/profile.html", {"user": user})
 
+
+def option(request):
+    return render(request, "option.html")
 # class SignInView(FormView):
 #     template_name = "renz_app/accounts/sign_in.html"
 #     form_class = RenzUserCreationForm

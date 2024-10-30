@@ -16,7 +16,10 @@
             {{ form.content }}
             </div>
             <div class="mb-3">
-                {{ form.image }}
+                <label for="{{ form.image.id_for_label }}">画像</label>{{ form.image }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.video.id_for_label }}">動画</label>{{ form.video }}
             </div>
             <button type="submit" class="btn btn-success">投稿する</button>
             <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>

@@ -1,4 +1,4 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -12,9 +12,46 @@
     color: #363636;
 }
 
-
 body {
     font-size: 16px;
     color: #363636;
     font-family: "Hiragino kaku Gothic ProN", sans-serif;
+}
+
+/* 通常モードのスタイル */
+header {
+    background-color: cyan;
+    text-align: center;
+}
+
+main {
+    padding: 0 20px;
+}
+
+#darkmodeBtn {
+    background-color: gray;
+    color: white;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+#darkmodeBtn:hover {
+    opacity: 0.7;
+}
+
+/* ダークモードのスタイル */
+.dark {
+    background-color: black;
+    color: silver;
+}
+
+.dark header {
+    background-color: midnightblue;
+}
+
+.dark #darkmodeBtn {
+    background-color: silver;
+    color: black;
 }

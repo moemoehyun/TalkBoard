@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 class Board(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to='images/', blank=True, null=True)  # 画像フィールドを追加
+    # image = models.FileField(upload_to='images/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    video = models.FileField(upload_to='videos/', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="boards", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

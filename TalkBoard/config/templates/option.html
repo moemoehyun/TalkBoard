@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}新規投稿{% endblock %}
+
+
+{% block content %}
+
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dark">
+    <header>この設定はPCのキャッシュを利用して反映されます</header>
+        <form action="{% url 'app:index' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">戻る</button>
+    </form>
+  <main>
+    <h1>■設定</h1>
+    <p>サイトのテーマカラーを変更（白・黒の２種類）
+    </p>
+    <div id='darkmodeBtn'><button type="button">テーマ切り替え</button></div>
+  </main>
+  <script src="{% static 'js/darkmode.js' %}"></script>
+</body>
+</html>
+
+{% endblock %}

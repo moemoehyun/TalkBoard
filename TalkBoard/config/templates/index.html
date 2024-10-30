@@ -3,6 +3,7 @@
 {% block title %}全ての投稿一覧{% endblock %}
 
 {% block content %}
+<body class="dark">
     <section>
     <h1>■みんなの投稿一覧</h1>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
@@ -111,5 +112,6 @@
     <a href="?page={{ boards.next_page_number }}">次へ</a>
     <a href="?page={{ boards.paginator.num_pages }}">最後 &raquo;</a>
     {% endif %}    
+</body>
 
 {% endblock %}

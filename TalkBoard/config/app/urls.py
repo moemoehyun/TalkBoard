@@ -33,6 +33,8 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("contact/success", views.contact_success, name="contact_success"),
 
+    path("option", views.option, name="option"),
+
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
     path("accounts/logout/", views.logout_view, name="logout"),
     path("accounts/signup/", views.signup, name="signup"),
