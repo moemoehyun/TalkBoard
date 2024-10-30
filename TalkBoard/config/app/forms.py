@@ -12,7 +12,7 @@ from .models import Board, Comment, Favorite, Contact
 class BoardForm(forms.ModelForm):
     class Meta:
         model = Board
-        fields = ['title', 'content', 'image']
+        fields = ['title', 'content', 'image', "video"] #"video"
 
 class CommentForm(forms.ModelForm):
     class Meta:

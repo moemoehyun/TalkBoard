@@ -13,6 +13,12 @@
         {% if board.image %}
             <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
         {% endif %}
+        {% if board.video %}
+            <video width="320" height="240" controls>
+            <source src="{{ board.video.url }}" type="video/mp4">
+        お使いのブラウザは動画タグに対応していません。
+    </video>
+{% endif %}
         <p>{{ board.user }}さんの投稿</p>
         <p>
             作成：{{ board.created_at|date:"Y/m/d H:i" }}</br>
