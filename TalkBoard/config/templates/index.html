@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}全ての投稿一覧{% endblock %}
 
@@ -111,7 +112,8 @@
     {% if boards.has_next %}
     <a href="?page={{ boards.next_page_number }}">次へ</a>
     <a href="?page={{ boards.paginator.num_pages }}">最後 &raquo;</a>
-    {% endif %}    
+    {% endif %} 
+    <script src="{% static 'js/darkmode.js' %}"></script>
 </body>
 
 {% endblock %}

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{ board.title }の編集画面{% endblock %}
 
 {% block content %}
+<body class="dark">
     <section>
         <h2>■「{ board.title }」の編集</h2>
         <form action="{% url 'app:update' pk=board.id %}" method="post">
@@ -19,4 +21,6 @@
             <a href="{% url 'app:show' pk=board.id %}" class="btn btn-primary">詳細ページに戻る</a>
         </form>
     </section>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+</body>
 {% endblock %}

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}あなたの投稿一覧{% endblock %}
 
 {% block content %}
+<body class="dark">
     <section>
     <h1>■あなたの投稿一覧</h1>
     <form method="gGET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
@@ -49,4 +51,6 @@
         <a href="{% url 'app:new' %}" class="btn btn-primary">新規投稿画面</a>
         <a href="{% url 'app:index' %}" class="btn btn-primary">みんなの投稿一覧</a>
     </section>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+    </body>
 {% endblock %}

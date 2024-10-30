@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}プロフィール画面{% endblock %}
 
 {% block content %}
+<body class="dark">
 <section class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -13,4 +15,6 @@
     </div>
     <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>
     </section>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+</body>
 {% endblock %}
