@@ -1,0 +1,4 @@
+databases:
+  - name: django_render_bd
+    databaseName: django_render_bd
+    user: 
