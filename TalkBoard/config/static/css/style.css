@@ -30,7 +30,7 @@ main {
 
 #darkmodeBtn {
     background-color: gray;
-    color: white;
+    color: #222222;
     width: 150px;
     text-align: center;
     cursor: pointer;
@@ -43,8 +43,8 @@ main {
 
 /* ダークモードのスタイル */
 .dark {
-    background-color: black;
-    color: silver;
+    background-color: #222222;
+    color: rgb(226, 226, 226);
 }
 
 .dark header {
