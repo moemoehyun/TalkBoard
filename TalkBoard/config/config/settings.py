@@ -90,28 +90,28 @@ import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        default='postgresql://postgres:postgres@localhost:5432/',
         conn_max_age=600
     )
 }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
-        # 'NAME': config('DB_NAME'),          # データベース名
-        # 'USER': config('DB_USER'),          # データベースのユーザー名
-        # 'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
-        # 'HOST': config('DB_HOST'),          # データベースのホスト
-        # 'PORT': config('DB_PORT'),          # データベースのポート
-        'NAME': os.environ.get('DB_NAME'),          # データベース名
-        'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
-        'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
-        'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
-        'PORT': os.environ.get('DB_PORT'), 
-        'OPTIONS': {
-            'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
-        }
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
+#         # 'NAME': config('DB_NAME'),          # データベース名
+#         # 'USER': config('DB_USER'),          # データベースのユーザー名
+#         # 'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
+#         # 'HOST': config('DB_HOST'),          # データベースのホスト
+#         # 'PORT': config('DB_PORT'),          # データベースのポート
+#         'NAME': os.environ.get('DB_NAME'),          # データベース名
+#         'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
+#         'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
+#         'PORT': os.environ.get('DB_PORT'), 
+#         'OPTIONS': {
+#             'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
