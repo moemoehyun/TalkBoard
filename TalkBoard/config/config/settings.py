@@ -79,7 +79,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',  # SQLite3データベースを使用
+#         'NAME': BASE_DIR / 'db.sqlite3',         # プロジェクトのルートにdb.sqlite3ファイルを作成
+#     }
+# }
+# Import the dj-database-url package at the beginning of the file
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        conn_max_age=600
+    )
+}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
@@ -98,8 +112,6 @@ DATABASES = {
         }
     }
 }
-
-SECRET_KEY = config('SECRET_KEY')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
