@@ -82,18 +82,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
-        'NAME': config('DB_NAME'),          # データベース名
-        'USER': config('DB_USER'),          # データベースのユーザー名
-        'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
-        'HOST': config('DB_HOST'),          # データベースのホスト
-        'PORT': config('DB_PORT'),          # データベースのポート
+        # 'NAME': config('DB_NAME'),          # データベース名
+        # 'USER': config('DB_USER'),          # データベースのユーザー名
+        # 'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
+        # 'HOST': config('DB_HOST'),          # データベースのホスト
+        # 'PORT': config('DB_PORT'),          # データベースのポート
+        'NAME': os.environ.get('DB_NAME'),          # データベース名
+        'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
+        'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
+        'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
+        'PORT': os.environ.get('DB_PORT'), 
     }
 }
-        # 'NAME': os.environ.get('DB_NAME'),          # データベース名
-        # 'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
-        # 'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
-        # 'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
-        # 'PORT': os.environ.get('DB_PORT'),  
+         
 SECRET_KEY = config('SECRET_KEY')
 
 # Password validation
