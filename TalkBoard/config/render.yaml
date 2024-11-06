@@ -2,3 +2,11 @@ databases:
   - name: django_render_bd
     databaseName: django_render_bd
     user: 
+
+services:
+  - type: web
+    name: TalkBoard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn TalkBoard.wsgi:application
+    pythonVersion: "3.9"  # Update to a supported version

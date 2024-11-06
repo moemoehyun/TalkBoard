@@ -72,7 +72,7 @@ TEMPLATES = [
         },
     },
 ]
-print(TEMPLATES)
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -93,9 +93,12 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
         'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
         'PORT': os.environ.get('DB_PORT'), 
+        'OPTIONS': {
+            'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
+        }
     }
 }
-         
+
 SECRET_KEY = config('SECRET_KEY')
 
 # Password validation
