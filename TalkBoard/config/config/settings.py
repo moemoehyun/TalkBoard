@@ -22,8 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'config.urls'
 
@@ -81,14 +82,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
-        'NAME': os.environ.get('DB_NAME'),          # データベース名
-        'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
-        'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
-        'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
-        'PORT': os.environ.get('DB_PORT'),          # データベースのポート
+        'NAME': config('DB_NAME'),          # データベース名
+        'USER': config('DB_USER'),          # データベースのユーザー名
+        'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
+        'HOST': config('DB_HOST'),          # データベースのホスト
+        'PORT': config('DB_PORT'),          # データベースのポート
     }
 }
-
+        # 'NAME': os.environ.get('DB_NAME'),          # データベース名
+        # 'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
+        # 'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
+        # 'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
+        # 'PORT': os.environ.get('DB_PORT'),  
+SECRET_KEY = config('SECRET_KEY')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
