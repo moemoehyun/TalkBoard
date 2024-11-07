@@ -13,8 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv() 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -107,11 +109,12 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
         'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
         'PORT': os.environ.get('DB_PORT'), 
-        'OPTIONS': {
-            'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
-        }
+        # 'OPTIONS': {
+        #     'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
+        # }
     }
 }
+print(os.environ.get('DB_PASSWORD'))
 
 LOGGING = {
     "version": 1,
