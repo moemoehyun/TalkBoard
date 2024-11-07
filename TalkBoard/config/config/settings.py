@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['talkboard.onrender.com', "localhost", "127.0.0.1"]
 
@@ -96,46 +96,55 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         conn_max_age=600
 #     )
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
-        # 'NAME': config('DB_NAME'),          # データベース名
-        # 'USER': config('DB_USER'),          # データベースのユーザー名
-        # 'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
-        # 'HOST': config('DB_HOST'),          # データベースのホスト
-        # 'PORT': config('DB_PORT'),          # データベースのポート
-        'NAME': os.environ.get('DB_NAME'),          # データベース名
-        'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
-        'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
-        'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
-        'PORT': os.environ.get('DB_PORT'), 
-        # 'OPTIONS': {
-        #     'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
-        # }
+if os.getenv('SQLITE3'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
-print(os.environ.get('DB_PASSWORD'))
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "WARNING",
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-            "propagate": False,
-        },
-    },
-}
+if os.getenv('RENDER'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',  # 使用するデータベースのエンジン
+            # 'NAME': config('DB_NAME'),          # データベース名
+            # 'USER': config('DB_USER'),          # データベースのユーザー名
+            # 'PASSWORD': config('DB_PASSWORD'),  # データベースのパスワード
+            # 'HOST': config('DB_HOST'),          # データベースのホスト
+            # 'PORT': config('DB_PORT'),          # データベースのポート
+            'NAME': os.environ.get('DB_NAME'),          # データベース名
+            'USER': os.environ.get('DB_USER'),          # データベースのユーザー名
+            'PASSWORD': os.environ.get('DB_PASSWORD'),  # データベースのパスワード
+            'HOST': os.environ.get('DB_HOST'),          # データベースのホスト
+            'PORT': os.environ.get('DB_PORT'), 
+            # 'OPTIONS': {
+            #     'sslmode': 'require',  # or 'verify-full' if CA certificate is provided
+            # }
+        }
+    }
+
+
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "root": {
+#         "handlers": ["console"],
+#         "level": "WARNING",
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+#             "propagate": False,
+#         },
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
