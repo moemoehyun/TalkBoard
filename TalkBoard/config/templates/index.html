@@ -40,17 +40,17 @@
                     </a>
                 </th>
                 <th scope="col">タイトル
-                <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
+                <!-- <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='title' field=sort_by direction=direction %}
-                </a>
+                </a> -->
                 <th scope="col">投稿者</th>
             <th scope="col">コメント
-                <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
+                <!-- <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='comment_count' field=sort_by direction=direction %}
-                </a>
+                </a> -->
             </th>
             <th scope="col">
-                お気に入り
+                マーク
             </th>
                 <th scope="col">
                     投稿

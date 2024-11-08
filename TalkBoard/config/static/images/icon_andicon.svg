@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="182mm"
+   height="54mm"
+   viewBox="0 0 182 54"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="icon_andicon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="icon_andicon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:export-bgcolor="#ffffff00"
+     inkscape:zoom="0.47984454"
+     inkscape:cx="439.72575"
+     inkscape:cy="207.35883"
+     inkscape:window-width="1409"
+     inkscape:window-height="671"
+     inkscape:window-x="24"
+     inkscape:window-y="175"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     showgrid="false" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect15"
+       is_visible="true"
+       lpeversion="1" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="display:none;fill:#00ff00;stroke:#cccccc;stroke-width:0;paint-order:markers fill stroke"
+       id="rect1"
+       width="254.19257"
+       height="320.3598"
+       x="-20.952967"
+       y="-22.055756"
+       ry="0" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#cccccc;stroke-width:0;paint-order:markers fill stroke"
+       d="m 38.918216,87.176805 c 1.546085,-8.423146 6.099144,-16.262328 12.649416,-21.779003 6.550273,-5.516675 15.049569,-8.670256 23.612949,-8.761356 8.563379,-0.0911 17.127842,2.880952 23.793995,8.257027 6.666154,5.376074 11.384954,13.116619 13.109884,21.504967 2.40526,11.696785 -1.2375,24.4713 -9.45022,33.14029 -8.212717,8.66898 -20.771822,12.99643 -32.581451,11.22648 l -9.340372,59.93405 c 12.615548,-1.91398 24.702335,-7.20732 34.664106,-15.18093 9.961767,-7.97361 17.773737,-18.60766 22.404197,-30.49775 4.63047,-11.89008 6.0679,-25.00662 4.12248,-37.61736 C 119.95777,94.792483 114.63433,82.718928 106.63591,72.777064 94.453205,57.634222 75.594221,47.609345 56.159272,47.691496 46.441798,47.732571 36.716252,50.255159 28.317458,55.143026 19.918663,60.030893 12.883772,67.294555 8.4695752,75.951683 4.0553781,84.60881 2.3086322,94.639872 3.761339,104.24823 c 1.4527068,9.60837 6.1345514,18.73523 13.246245,25.35753 7.111694,6.62229 16.630023,10.65851 26.343373,10.94456 9.71335,0.28605 19.527518,-3.23071 26.701832,-9.78511 3.157734,-2.88488 5.805258,-6.32667 7.783645,-10.11874"
+       id="path15"
+       inkscape:path-effect="#path-effect15"
+       inkscape:original-d="m 38.918216,87.176805 c 31.912937,43.588405 49.296409,-0.778365 73.166244,-0.778365 23.86984,0 -28.280569,29.57785 -42.031671,44.36677 l -9.340372,59.93405 C 92.625354,234.28767 82.766075,72.777064 106.63591,72.777064 c 23.86984,0 -22.832019,43.199226 -36.583121,57.988146 -13.751103,14.78892 7.00528,1.55672 7.783645,-10.11874"
+       sodipodi:nodetypes="csccssc"
+       transform="matrix(0.26399237,0,0,0.26399237,5.7041408,-3.7236112)" />
+    <text
+       xml:space="preserve"
+       style="font-size:26.0884px;font-family:'YDW bananaslip plus';-inkscape-font-specification:'YDW bananaslip plus, Normal';fill:#ffffff;stroke:#cccccc;stroke-width:0;paint-order:markers fill stroke"
+       x="41.354542"
+       y="35.289185"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="fill:#ffffff;stroke-width:0"
+         x="41.354542"
+         y="35.289185">TalkBoard</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2" />
+</svg>

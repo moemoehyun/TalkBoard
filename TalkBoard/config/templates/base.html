@@ -18,8 +18,8 @@
     <header class="bg-success">
         <div class="container">
             <div class="pt-3 pb-1 mb-2 text-white d-flex justify-content-between align-items-center flex-wrap">
-            <img src="{% static 'images/icon.png' %}" alt="アイコン" width="70" class="me-2">
-            <h1 class="display-4">なかま掲示板</h1>
+            <img src="{% static 'images/icon_andicon.png' %}" alt="アイコン" width="190" class="me-4">
+            <!-- <h1 class="display-4">TalkBoard</h1> -->
             {% if user.is_authenticated %}
             <div>
                 <p class="text-light">「{{ user.username }}」でログイン中</p>
@@ -52,7 +52,7 @@
     <footer class="bg-secondary">
         <div class="container">
             <div class="pt-3 pb-1 mb-2 text-white">
-                <p class="trxt-center">&copy; 2024 つつじ掲示板</p>
+                <p class="trxt-center">&copy; 2024 TalkBoard</p>
             </div>
         </div>
     </footer>
