@@ -7,21 +7,21 @@
 <body class="dark">
     <section>
     <h1>■あなたの投稿一覧</h1>
-    <form method="gGET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
-    <div class="col-md-3">
-        <input type="text" name="query" id="id_query" pleceholder="検索">
-    </div>
-    <div class="col-md-2">
-        <select name="search_type" class="form-select">
-            <option value="partial">部分一致</option>
-            <option value="prefix">前方一致</option>
-            <option value="suffix">後方一致</option>
-        </select>
-    </div>
-    <div class="col-md-1">
-        <button type="submit" class="btn btn-light">検索</button>
+    <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
+        <div class="col-md-3">
+            <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
         </div>
-    </form>
+        <div class="col-md-2">
+            <select name="search_type" class="form-select">
+                <option value="partial">部分一致</option>
+                <option value="prefix">前方一致</option>
+                <option value="suffix">後方一致</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-light">検索</button>
+            </div>
+        </form>
     <table class="table">
         <colgroup>
             <col style="width: 10%;">

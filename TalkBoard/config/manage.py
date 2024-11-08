@@ -19,3 +19,14 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# from app.validators import CustomPasswordValidator
+
+# validator = CustomPasswordValidator()
+
+# # 条件に合わないパスワードをテストしてみる
+# try:
+#     validator.validate("password")  # 例: 条件に合わないパスワード
+# except Exception as e:
+#     print(e)  # ここでエラーメッセージが出力されるか確認

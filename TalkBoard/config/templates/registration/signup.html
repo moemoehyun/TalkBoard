@@ -4,7 +4,6 @@
 {% block title %}ユーザー登録画面{% endblock %}
 
 {% block content %}
-<!-- <body class="dark"> -->
 <body>
   <section class="container">
     <div class="row justify-content-center">
@@ -34,19 +33,22 @@
         {{ form.password2 }}
         </div>
       </div>
+      <a>パスワードは'半角英語、半角数字、特殊文字のどれかを2種類以上使い、８文字以上である必要があります'</a>
       <div class="mb-3 row">
         <div class="co;-sm-8 offset-sm-4">
-        <button type ="submit" class = "btb btb-success">登録</button>
+        <button type ="submit" class = "btn btn-success">登録</button>
         </div>
       </div>
       </form>
       </div>
     </div>
     </section>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+  </body>
   {% endblock %}
 
 
-  {% comment %} {% extends "base.html" %}
+  <!-- {% comment %} {% extends "base.html" %}
 
   {% block content %}
     <section>
@@ -68,4 +70,4 @@
       <script src="{% static 'js/darkmode.js' %}"></script>
       </body>
     {% endblock %}
-   {% endcomment %}
+   {% endcomment %} -->
