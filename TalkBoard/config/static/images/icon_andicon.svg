@@ -32,8 +32,8 @@
      inkscape:cy="207.35883"
      inkscape:window-width="1409"
      inkscape:window-height="671"
-     inkscape:window-x="24"
-     inkscape:window-y="175"
+     inkscape:window-x="58"
+     inkscape:window-y="163"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1"
      showgrid="false" />
@@ -64,18 +64,18 @@
        inkscape:path-effect="#path-effect15"
        inkscape:original-d="m 38.918216,87.176805 c 31.912937,43.588405 49.296409,-0.778365 73.166244,-0.778365 23.86984,0 -28.280569,29.57785 -42.031671,44.36677 l -9.340372,59.93405 C 92.625354,234.28767 82.766075,72.777064 106.63591,72.777064 c 23.86984,0 -22.832019,43.199226 -36.583121,57.988146 -13.751103,14.78892 7.00528,1.55672 7.783645,-10.11874"
        sodipodi:nodetypes="csccssc"
-       transform="matrix(0.26399237,0,0,0.26399237,5.7041408,-3.7236112)" />
+       transform="matrix(0.28205352,0,0,0.28205352,0.1313187,-6.6164661)" />
     <text
        xml:space="preserve"
-       style="font-size:26.0884px;font-family:'YDW bananaslip plus';-inkscape-font-specification:'YDW bananaslip plus, Normal';fill:#ffffff;stroke:#cccccc;stroke-width:0;paint-order:markers fill stroke"
-       x="41.354542"
-       y="35.289185"
+       style="font-size:27.8732px;font-family:'YDW bananaslip plus';-inkscape-font-specification:'YDW bananaslip plus, Normal';fill:#ffffff;stroke:#cccccc;stroke-width:0;paint-order:markers fill stroke"
+       x="38.220757"
+       y="35.065411"
        id="text1"><tspan
          sodipodi:role="line"
          id="tspan1"
          style="fill:#ffffff;stroke-width:0"
-         x="41.354542"
-         y="35.289185">TalkBoard</tspan></text>
+         x="38.220757"
+         y="35.065411">TalkBoard</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
