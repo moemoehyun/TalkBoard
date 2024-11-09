@@ -54,6 +54,10 @@ if os.getenv('RENDER'):
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME'),
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME'),  # 例: 'us-west-2'
     AWS_QUERYSTRING_AUTH = False  # URLに認証情報を含めない
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN'),
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
 else:
     #画像ファイルの保存場所を設定
     MEDIA_URL = '/media/'
