@@ -14,8 +14,12 @@ class BoardForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'タイトル'})
     )
     content = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '内容'})
-    )
+    widget=forms.Textarea(attrs={
+        'class': 'form-control', 
+        'placeholder': '内容',
+        'rows': 5  # 行数を増やしたい数に設定
+    })
+)
     class Meta:
         model = Board
         fields = ['title', 'content', 'image', "video"] #"video"

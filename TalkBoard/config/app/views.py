@@ -16,6 +16,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count
+from dotenv import load_dotenv
+import os
 
 # Create your views here.
 def user_owns_board(view_func):
@@ -146,7 +148,7 @@ def board_search(request):
     else:
         boards = Board.objects.none()
 
-    return render(request, "index.html", {"board": boards})
+    return render(request, "index.html", {"boards": boards})
 
 def board_sort(request):
     sort_by = request.GET.get('sort')
@@ -199,12 +201,14 @@ def contact(request):
             contact = form.save()
 
             #ユーザーへのメール
+            
             user_subject = "お問い合わせを受け付けました"
             user_message = "お問い合わせ内容：\n\n{}".format(contact.message)
-            send_mail(user_subject, user_message, settings.EMAIL_HOST_USER, [contact.email])
+            send_mail(user_subject, user_message, settings.EMAIL_HOST_USER, [os.getenv('EMAIL_HOST_USER')])
             #運営者へのメール
+            User_email = contact.email 
             admin_subject = "お問い合わせがありました"
-            admin_message = "お問い合わせ内容：\n\n{}".format(contact.message)
+            admin_message = (f"{User_email}"+"\n\nお問い合わせ内容：\n\n{}").format(contact.message)
             send_mail(admin_subject, admin_message, settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER])
             return redirect("app:contact_success")
     else:

@@ -14,8 +14,12 @@ class CustomPasswordValidator:
         has_letter = bool(re.search(r'[A-Za-z]', password))
         has_number = bool(re.search(r'\d', password))
         has_special = bool(re.search(r'[!@#$%^&*()_+]', password))
+        # print(has_letter)
+        # print(has_number)
+        # print(has_special)
 
         conditions_met = sum([has_letter, has_number, has_special])
+        # print(conditions_met)
         if conditions_met < 2:
             raise ValidationError(
                 _("半角英語、半角数字、特殊文字のどれかを2種類以上使い、８文字以上である必要があります")

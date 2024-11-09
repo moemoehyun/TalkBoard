@@ -28,9 +28,9 @@
             <col style="width: 25%;">
             <col style="width: 15%;">
             <col style="width: 10%;">
-            <col style="width: 10%;">
             <col style="width: 15%;">
-            <col style="width: 15%;">
+            <col style="width: 25%;">
+            <!-- <col style="width: 15%;"> -->
         </colgroup>
         <thead>
             <tr>
@@ -58,11 +58,11 @@
                     {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
                 </a>
                 </th>
-                <th scope="col">更新
+                <!-- <th scope="col">更新
                 <a href="{% url 'app:sort' %}?sort=updated_at&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='updated_at' field=sort_by direction=direction %}
                 </a>
-            </th>
+            </th> -->
             </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
                     {% endif %}
                 </td>
                 <td scope="col">{{ board.created_at|date:"Y/m/d H:i" }}</td>
-                <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td>
+                <!-- <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td> -->
                 </tr>
             {% empty %}
                 <p>該当するスレッドが見つかりませんでした。</p>

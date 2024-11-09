@@ -14,9 +14,9 @@
           <form method="post">
             {% csrf_token %}
             <div class="mb-3 row">
-              <label for="id_email" class="col-sm-4 col-form-label">メールアドレス</label></br>
+              <label for="id_email" class="col-sm-4 col-form-label">折り返し用メールアドレス</label></br>
               <div class="col-sm-8">
-                {{ form.email }}(問い合わせ先のメールアドレスを入力)
+                {{ form.email }}
               </div>
             </div>
             <div class="mb-3 row">
