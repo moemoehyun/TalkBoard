@@ -13,7 +13,6 @@
 }
 
 body {
-    transition: background-color 0.3s, color 0.3s; /* スムーズな切り替え */
     font-size: 16px;
     color: #363636;
     font-family: "Hiragino kaku Gothic ProN", sans-serif;

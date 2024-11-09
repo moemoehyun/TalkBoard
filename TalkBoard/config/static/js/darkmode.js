@@ -9,10 +9,8 @@ if (mode === 'dark') {
 } else {
     body.classList.remove('dark');
 }
-if (darkModeBtn) {
-    darkmodeBtn.addEventListener('click', () => {
-        body.classList.toggle('dark');
-        mode = body.classList.contains('dark') ? 'dark' : 'normal';
-        localStorage.setItem('mode', mode);
-    });
-}
+darkmodeBtn.addEventListener('click', () => {
+    body.classList.toggle('dark');
+    mode = body.classList.contains('dark') ? 'dark' : 'normal';
+    localStorage.setItem('mode', mode);
+});
