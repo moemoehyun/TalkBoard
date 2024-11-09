@@ -12,10 +12,10 @@
         </form>
         <h2>■{{ board.title }}</h2>
         <h4>{{ board.content }}</h4>
-        {% if board.image and board.image.url %}
+        {% if board.image %}
             <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
         {% endif %}
-        {% if board.video and board.video.url %}
+        {% if board.video %}
             <video width="320" height="240" controls>
             <source src="{{ board.video.url }}" type="video/mp4">
         お使いのブラウザは動画タグに対応していません。
