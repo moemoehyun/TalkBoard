@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from decouple import config
 from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 load_dotenv() 
 
@@ -54,10 +55,11 @@ if os.getenv('RENDER'):
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME'),
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME'),  # 例: 'us-west-2'
     AWS_QUERYSTRING_AUTH = False  # URLに認証情報を含めない
-    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN'),
+    AWS_S3_CUSTOM_DOMAIN = f'(https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com)'
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
     }
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 else:
     #画像ファイルの保存場所を設定
     MEDIA_URL = '/media/'
