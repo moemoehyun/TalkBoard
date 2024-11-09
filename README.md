@@ -1,6 +1,6 @@
 # TalkBoard
 https://talkboard.onrender.com<br />
-(現時点ではRenderの無料枠での公開になるため期間限定)
+(期間限定の配信になる可能性があります)
 
 Webアプリの勉強を兼ねた個人製作です。<br />
 多機能なWeb掲示板を目指して日々改良中です。<br />
