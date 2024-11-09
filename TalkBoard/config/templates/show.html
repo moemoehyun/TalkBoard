@@ -13,7 +13,7 @@
         <h2>■{{ board.title }}</h2>
         <h4>{{ board.content }}</h4>
         {% if board.image and board.image.url %}
-            <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
+        <img src="{{ MEDIA_URL }}{{ board.image.name }}" alt="Image" class="img-fluid">
         {% endif %}
         {% if board.video and board.video.url %}
             <video width="320" height="240" controls>

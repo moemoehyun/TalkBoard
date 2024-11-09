@@ -62,6 +62,8 @@ if os.getenv('RENDER'):
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     print(AWS_S3_CUSTOM_DOMAIN)
 
+    MEDIA_ROOT = ""
+
 else:
     #画像ファイルの保存場所を設定
     MEDIA_URL = '/media/'
