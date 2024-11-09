@@ -20,14 +20,14 @@ body {
 
 /* 通常モードのスタイル */
 header {
-    background-color: cyan;
+    background-color: rgb(109, 217, 217);
     text-align: center;
-    width: 200%;
+    width: 100%;
     box-sizing: border-box;
 }
 
 footer {
-    width: 200%;
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -57,7 +57,7 @@ main {
 .dark header {
     background-color: midnightblue;
     text-align: center;
-    width: 200%;
+    width: 100%;
     box-sizing: border-box;
 }
 
