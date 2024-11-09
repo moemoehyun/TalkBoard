@@ -13,4 +13,5 @@ class Command(BaseCommand):
                 email=os.environ.get('DJANGO_SUPERUSER_EMAIL'),
                 password=os.environ.get('DJANGO_SUPERUSER_PASSWORD')
             )
+            print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         self.stdout.write("Superuser has been created.")
