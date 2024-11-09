@@ -59,7 +59,7 @@ if os.getenv('RENDER'):
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400'
     }
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
     MEDIA_ROOT = ""
 
