@@ -59,19 +59,6 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ["username", "email", "password1", "password2"]
 
-# class SignUpForm(UserCreationForm):
-#     email = forms.EmailField(
-#         max_length=254,
-#         help_text="emailアドレスは必須項目です。",
-#         error_messages={'invalid': "メールアドレスを入力してください"}
-#         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'メールアドレス'})
-#     )
-#     username = forms.CharField(
-#         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ユーザー名'})
-#     )
-#     class Meta:
-#         model = User
-#         fields = ["username", "email", "password1", "password2"]
 
 class FavoriteForm(forms.ModelForm):
     class Meta:
@@ -79,6 +66,15 @@ class FavoriteForm(forms.ModelForm):
         fields = ["board"]
 
 class ContactForm(forms.ModelForm):
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'タイトル'})
+    )
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'メッセージ', 'rows': 4})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'メールアドレス'})
+    )
 
     class Meta:
         model = Contact
