@@ -3,6 +3,7 @@ from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from .views import verify_email
 
 from django.views.static import serve
 from django.conf import settings
@@ -13,6 +14,7 @@ from django.conf.urls.static import static
 app_name = 'app'
 urlpatterns = [
     # 他のパス設定...
+    path('verify-email/<uidb64>/<token>/', verify_email, name='email_verification'),
     re_path(r'^favicon\.ico$', serve, {'path': 'favicon.ico', 'document_root': settings.STATIC_ROOT}),
     # path("admin/", admin.site.urls),
     # path("", include("app.urls")),

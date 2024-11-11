@@ -1,4 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import redirect
+from django.utils.http import urlsafe_base64_decode
+from .models import CustomUser
+
 from .forms import BoardForm, SignUpForm, CommentForm, FavoriteForm, ContactForm
 from .models import Board, Comment, Favorite
 from django.views.generic.edit import FormView
@@ -20,6 +25,21 @@ from dotenv import load_dotenv
 import os
 
 # Create your views here.
+def verify_email(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.email_verified = True
+        user.save()
+        return redirect('login')  # ログインページなどにリダイレクト
+    else:
+        return redirect('signup')  # 無効なリンクの場合
+
+
 def user_owns_board(view_func):
     @wraps(view_func)
     def wrapper(request, pk):
