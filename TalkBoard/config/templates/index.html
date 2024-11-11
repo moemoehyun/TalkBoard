@@ -34,7 +34,7 @@
         </colgroup>
         <thead>
             <tr>
-                <th scope="col">掲示板ID
+                <th scope="col">ID
                     <a href="{% url 'app:sort' %}?sort=id&direction={{ next_direction|default:'asc' }}">
                         {% include "direction.html" with sort_filed='id' field=sort_by direction=direction %}
                     </a>
@@ -89,8 +89,8 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td scope="col">{{ board.created_at|date:"Y/m/d H:i" }}</td>
-                <!-- <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td> -->
+                    <td scope="col">{{ board.created_at|date:"Y/m/d H:i" }}</td>
+                    <!-- <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td> -->
                 </tr>
             {% empty %}
                 <p>該当するスレッドが見つかりませんでした。</p>
@@ -114,6 +114,7 @@
     <a href="?page={{ boards.paginator.num_pages }}">最後 &raquo;</a>
     {% endif %} 
     <script src="{% static 'js/darkmode.js' %}"></script>
+    <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
 </body>
 
 {% endblock %}
