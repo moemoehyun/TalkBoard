@@ -18,8 +18,89 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 from dotenv import load_dotenv
 import os
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from .forms import RegistrationForm
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import get_user_model
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+
 
 # Create your views here.
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # メールアドレス認証用のトークンを生成
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(user.pk.encode())
+            domain = get_current_site(request).domain
+            link = f"http://{domain}/activate/{uid}/{token}/"
+            
+            # メール送信
+            send_mail(
+                'Activate your account',
+                f'Click the link to activate your account: {link}',
+                'from@example.com',
+                [user.email],
+            )
+            return redirect('app:email_sent')
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'register.html', {'form': form})
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_user_model().objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('app:login')
+    else:
+        return redirect('app:activation_failed')
+    
+def activation_failed(request):
+    return render(request, 'activation_failed.html')
+    
+def email_sent(request):
+    return render(request, 'email_sent.html')
+
+def resend_email(request, user_id):
+    # ユーザーを取得
+    User = get_user_model()
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        # ユーザーが存在しない場合のエラーハンドリング
+        return redirect('activation_failed')
+    
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(str(user.pk).encode())
+    domain = get_current_site(request).domain
+    link = f"http://{domain}/activate/{uid}/{token}/"
+    
+    send_mail(
+        'Activate your account',
+        f'Click the link to activate your account: {link}',
+        'from@example.com',
+        [user.email],
+    )
+    return redirect('app:email_sent')
+
 def user_owns_board(view_func):
     @wraps(view_func)
     def wrapper(request, pk):
@@ -228,12 +309,38 @@ def logout_view(request):
     return redirect("app:index")
 
 #サインアップページのビュー
+# def signup(request):
+#     if request.method == "POST":
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("app:login")
+#     else:
+#         form = SignUpForm()
+#     return render(request, "registration/signup.html", {"form": form})
+
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("app:login")
+            # サインアップしてユーザーを作成
+            user = form.save()
+            
+            # ユーザーの確認用メールを送信
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(str(user.pk).encode())
+            domain = get_current_site(request).domain
+            link = f"http://{domain}/activate/{uid}/{token}/"
+            
+            send_mail(
+                'Activate your account',
+                f'Click the link to activate your account: {link}',
+                'from@example.com',
+                [user.email],
+            )
+            
+            # メール送信後にリダイレクト
+            return redirect('email_sent')  # サインアップ後にメール送信完了画面にリダイレクト
     else:
         form = SignUpForm()
     return render(request, "registration/signup.html", {"form": form})
