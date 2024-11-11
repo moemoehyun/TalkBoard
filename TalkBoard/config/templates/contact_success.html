@@ -6,6 +6,10 @@
 {% block content %}
 <body class="dark">
 <section class="message">
+    <form action="{% url 'app:index' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">戻る</button>
+    </form>
     <p>お問い合わせありがとうございます。</p>
     <p>後日、担当者よりご連絡させていただきますので、しばらくお待ちください。</p>
     <a href="{% url 'app:index' %}" class="btn btn-primary">ホームに戻る</a>
