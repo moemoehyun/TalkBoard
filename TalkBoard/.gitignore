@@ -1,0 +1,21 @@
+# Python関連の無視するファイル
+*.pyc
+__pycache__/
+
+# Djangoの設定ファイルやログファイル
+*.log
+*.sqlite3
+db.sqlite3
+
+# バーチャル環境
+venv/
+env/
+
+# IDEの設定ファイル
+.idea/
+.vscode/
+
+# その他
+*.env
+*.pot
+*.mo
