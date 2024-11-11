@@ -86,7 +86,7 @@ def resend_email(request, user_id):
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
         # ユーザーが存在しない場合のエラーハンドリング
-        return redirect('activation_failed')
+        return redirect('app:activation_failed')
     
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(str(user.pk).encode())
@@ -323,8 +323,9 @@ def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            # サインアップしてユーザーを作成
-            user = form.save()
+            user = form.save(commit=False)  # 一旦保存は保留
+            user.is_active = False  # ユーザーを一時的に非アクティブにする
+            user.save()
             
             # ユーザーの確認用メールを送信
             token = default_token_generator.make_token(user)
