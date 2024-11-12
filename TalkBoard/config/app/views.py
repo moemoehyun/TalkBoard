@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BoardForm, SignUpForm, CommentForm, FavoriteForm, ContactForm
+from .forms import BoardForm, SignUpForm, CommentForm, FavoriteForm, ContactForm, RegistrationForm
 from .models import Board, Comment, Favorite
 from django.views.generic.edit import FormView
 from django.contrib.auth.password_validation import validate_password
@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView
 from django.core.exceptions import ValidationError
 from django.http import HttpRequest, HttpResponse, Http404
 from django.views.generic.detail import DetailView
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from functools import wraps
 from django.db import models
@@ -15,15 +15,12 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count
 from dotenv import load_dotenv
-import os
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from .forms import RegistrationForm
-from django.contrib.auth import get_user_model
-from django.contrib.auth import login
 from django.contrib.auth.models import User
+import os
 
 
 # Create your views here.
@@ -50,7 +47,6 @@ def register(request):
         form = RegistrationForm()
 
     return render(request, 'register.html', {'form': form})
-
 
 def activate(request, uidb64, token):
     try:
@@ -137,6 +133,7 @@ def my_boards(request):
     boards = user.boards.all()
     return render(request, "my_boards.html", {"boards": boards})
 
+@login_required
 def board_detail(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
     board.views += 1  # 閲覧数を1増加
