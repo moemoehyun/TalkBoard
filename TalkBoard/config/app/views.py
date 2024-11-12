@@ -337,7 +337,7 @@ def signup(request):
             )
             
             # メール送信後にリダイレクト
-            return redirect('app:email_sent')  # サインアップ後にメール送信完了画面にリダイレクト
+            return redirect('/email_sent/')  # サインアップ後にメール送信完了画面にリダイレクト
     else:
         form = SignUpForm()
     return render(request, "registration/signup.html", {"form": form})
