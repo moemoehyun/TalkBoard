@@ -9,10 +9,12 @@
     <h2>承認用のurlをご登録のメールアドレスに送信致しました。</h2>
     <p>urlを開いた時点でアカウントが承認されます。（このページは閉じても問題ありません）</p>
 
-    {% if user.is_authenticated %}
+    
+    <p>もしメールが届かないときは<a href="{% url 'app:resend_email' user.id %}">ここをクリック</a>.</p>
+    <!-- {% if user.is_authenticated %}
         <p>もしメールが届かないときは<a href="{% url 'app:resend_email' user.id %}">ここをクリック</a>.</p>
     {% else %}
         <p>新しい確認メールをリクエストするにはログインしてください</p>
-    {% endif %}
+    {% endif %} -->
 </body>
 </html>
