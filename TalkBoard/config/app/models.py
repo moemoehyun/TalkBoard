@@ -14,6 +14,7 @@ class Board(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="boards", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    views = models.PositiveIntegerField(default=0)  # 閲覧数フィールドを追加
 
     def __str__(self):
         return self.title

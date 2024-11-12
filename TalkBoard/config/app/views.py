@@ -137,6 +137,12 @@ def my_boards(request):
     boards = user.boards.all()
     return render(request, "my_boards.html", {"boards": boards})
 
+def board_detail(request, board_id):
+    board = get_object_or_404(Board, pk=board_id)
+    board.views += 1  # 閲覧数を1増加
+    board.save(update_fields=['views'])  # 閲覧数のみを保存
+    return render(request, 'board_detail.html', {'board': board})
+
 @login_required
 def comment_create(request, pk):
     if request.method == "POST":
@@ -346,7 +352,6 @@ def signup(request):
 def profile(request):
     user = request.user
     return render(request, "accounts/profile.html", {"user": user})
-
 
 def option(request):
     return render(request, "option.html")

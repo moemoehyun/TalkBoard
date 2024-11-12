@@ -24,7 +24,8 @@
         <p>{{ board.user }}さんの投稿</p>
         <p>
             作成：{{ board.created_at|date:"Y/m/d H:i" }}</br>
-            更新：{{ board.updated_at|date:"Y/m/d H:i" }}
+            更新：{{ board.updated_at|date:"Y/m/d H:i" }}</br>
+            閲覧数: {{ board.views }}
         </p>
         {% if request.user == board.user %}
         <div class="d-inline-block">
