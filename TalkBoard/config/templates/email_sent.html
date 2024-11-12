@@ -1,5 +1,3 @@
-{% extends "base.html" %}
-<!-- email_sent.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +6,13 @@
     <title>Check Your Email</title>
 </head>
 <body>
-    <h2>Confirmation Email Sent</h2>
-    <p>A confirmation email has been sent to your email address. Please check your inbox (and spam folder) and click the link to activate your account.</p>
-    {% if user.is_authenticated %}
-        <p>If you did not receive the email, <a href="{% url 'app:resend_email' user.id %}">click here to resend</a>.</p>
-    {% else %}
-        <p>Please log in to request a new confirmation email.</p>
-    {% endif %}
+    <h2>承認用のurlをご登録のメールアドレスに送信致しました。</h2>
+    <p>urlを開いた時点でアカウントが承認されます。（このページは閉じても問題ありません）</p>
 
+    {% if user.is_authenticated %}
+        <p>もしメールが届かないときは<a href="{% url 'app:resend_email' user.id %}">ここをクリック</a>.</p>
+    {% else %}
+        <p>新しい確認メールをリクエストするにはログインしてください</p>
+    {% endif %}
 </body>
 </html>
