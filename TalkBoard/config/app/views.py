@@ -66,8 +66,15 @@ def activate(request, uidb64, token):
 def activation_failed(request):
     return render(request, 'activation_failed.html')
     
-def email_sent(request):
-    return render(request, 'email_sent.html')
+def email_sent(request, user_id):
+    # ユーザーを取得し、テンプレートに渡す
+    User = get_user_model()
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return redirect('app:activation_failed')
+    
+    return render(request, 'email_sent.html', {'user': user})
 
 def resend_email(request, user_id):
     # ユーザーを取得
@@ -85,8 +92,8 @@ def resend_email(request, user_id):
     link = f"http://{domain}/activate/{uid}/{token}/"
     
     send_mail(
-        'Activate your account',
-        f'Click the link to activate your account: {link}',
+        'ユーザー登録ありがとうございます',
+        f'メール認証リンク: {link}',
         'from@example.com',
         [user.email],
     )
