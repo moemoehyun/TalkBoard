@@ -134,13 +134,6 @@ def my_boards(request):
     return render(request, "my_boards.html", {"boards": boards})
 
 @login_required
-def board_detail(request, board_id):
-    board = get_object_or_404(Board, pk=board_id)
-    board.views += 1  # 閲覧数を1増加
-    board.save(update_fields=['views'])  # 閲覧数のみを保存
-    return render(request, 'board_detail.html', {'board': board})
-
-@login_required
 def comment_create(request, pk):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
@@ -179,6 +172,11 @@ def show(request, pk):
     board = Board.objects.get(pk=pk)
     comments = Comment.objects.filter(board=pk).order_by("-created_at")
     comment_form = CommentForm()
+    
+    # 閲覧数を計算・保存
+    board.views += 1  # 閲覧数を1増加
+    board.save(update_fields=['views'])  # 閲覧数のみを保存
+
     return render(request, "show.html", {"board": board, "comments": comments, "comment_form": comment_form})
 
 @login_required
