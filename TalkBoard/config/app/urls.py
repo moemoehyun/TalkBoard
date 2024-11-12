@@ -15,7 +15,7 @@ urlpatterns = [
     # 他のパス設定...
     path('register/', views.register, name='register'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
-    path('email_sent/', views.email_sent, name='email_sent'),
+    path('email_sent/<int:user_id>/', views.email_sent, name='email_sent'),
     path('activation_failed/', views.activation_failed, name='activation_failed'),
     re_path(r'^favicon\.ico$', serve, {'path': 'favicon.ico', 'document_root': settings.STATIC_ROOT}),
      path('resend_email/<int:user_id>/', views.resend_email, name='resend_email'),
