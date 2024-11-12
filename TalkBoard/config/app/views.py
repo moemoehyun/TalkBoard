@@ -91,6 +91,7 @@ def resend_email(request, user_id):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(str(user.pk).encode())
     domain = get_current_site(request).domain
+    
     link = f"http://{domain}/activate/{uid}/{token}/"
     
     send_mail(
