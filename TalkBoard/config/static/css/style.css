@@ -72,12 +72,10 @@ main {
 
 /* PC用とスマホ用のレスポンシブスタイル */
 .mobile-view {
-    background-color: rgb(255, 255, 255);
     font-size: 11px;
 }
 
 .desktop-view {
-    background-color: rgb(255, 255, 255);
     font-size: 14px;
 }
 
