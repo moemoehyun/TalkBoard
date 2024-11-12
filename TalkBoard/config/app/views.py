@@ -10,24 +10,18 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from functools import wraps
-from django.db.models import Count
 from django.db import models
-from django.core.mail import send_mail
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count
 from dotenv import load_dotenv
 import os
-from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from .forms import RegistrationForm
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 
@@ -76,6 +70,7 @@ def activate(request, uidb64, token):
 def activation_failed(request):
     return render(request, 'activation_failed.html')
     
+@login_required
 def email_sent(request):
     return render(request, 'email_sent.html')
 
@@ -91,7 +86,7 @@ def resend_email(request, user_id):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(str(user.pk).encode())
     domain = get_current_site(request).domain
-    
+
     link = f"http://{domain}/activate/{uid}/{token}/"
     
     send_mail(
