@@ -70,7 +70,6 @@ def activate(request, uidb64, token):
 def activation_failed(request):
     return render(request, 'activation_failed.html')
     
-@login_required
 def email_sent(request):
     return render(request, 'email_sent.html')
 
