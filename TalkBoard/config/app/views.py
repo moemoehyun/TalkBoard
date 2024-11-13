@@ -22,8 +22,57 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 import os
 
-
 # Create your views here.
+
+#ログアウト
+def logout_view(request):
+    logout(request)
+    return redirect("app:index")
+
+#サインアップページのビュー
+# def signup(request):
+#     if request.method == "POST":
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("app:login")
+#     else:
+#         form = SignUpForm()
+#     return render(request, "registration/signup.html", {"form": form})
+
+def signup(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=True)  # 一旦保存は保留/の逆
+            user.is_active = False  # ユーザーを一時的に非アクティブにする
+            user.save()
+            
+            # ユーザーの確認用メールを送信
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(str(user.pk).encode())
+            domain = get_current_site(request).domain
+            link = f"http://{domain}/activate/{uid}/{token}/"
+            
+            send_mail(
+                'Activate your account',
+                f'Click the link to activate your account: {link}',
+                'from@example.com',
+                [user.email],
+            )
+            
+            # メール送信後にリダイレクト
+            return redirect('email_sent')  # サインアップ後にメール送信完了画面にリダイレクト
+    else:
+        form = SignUpForm()
+    return render(request, "registration/signup.html", {"form": form})
+
+#プロフィールページのビュー
+@login_required
+def profile(request):
+    user = request.user
+    return render(request, "accounts/profile.html", {"user": user})
+
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -37,8 +86,8 @@ def register(request):
             
             # メール送信
             send_mail(
-                'Activate your account',
-                f'Click the link to activate your account: {link}',
+                'ユーザー登録ありがとうございます',
+                f'メール認証リンク: {link}',
                 'from@example.com',
                 [user.email],
             )
@@ -302,54 +351,6 @@ def contact_success(request):
 class CustomLoginView(LoginView):
     template_name = "registration/login.html"
 
-#ログアウト
-def logout_view(request):
-    logout(request)
-    return redirect("app:index")
-
-#サインアップページのビュー
-# def signup(request):
-#     if request.method == "POST":
-#         form = SignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("app:login")
-#     else:
-#         form = SignUpForm()
-#     return render(request, "registration/signup.html", {"form": form})
-
-def signup(request):
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)  # 一旦保存は保留
-            user.is_active = False  # ユーザーを一時的に非アクティブにする
-            user.save()
-            
-            # ユーザーの確認用メールを送信
-            token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(str(user.pk).encode())
-            domain = get_current_site(request).domain
-            link = f"http://{domain}/activate/{uid}/{token}/"
-            
-            send_mail(
-                'Activate your account',
-                f'Click the link to activate your account: {link}',
-                'from@example.com',
-                [user.email],
-            )
-            
-            # メール送信後にリダイレクト
-            return redirect('/email_sent/')  # サインアップ後にメール送信完了画面にリダイレクト
-    else:
-        form = SignUpForm()
-    return render(request, "registration/signup.html", {"form": form})
-
-#プロフィールページのビュー
-@login_required
-def profile(request):
-    user = request.user
-    return render(request, "accounts/profile.html", {"user": user})
 
 def option(request):
     return render(request, "option.html")
