@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 from .models import Board, Comment, Favorite, Contact
+from django.contrib.auth import get_user_model
 
 # class BoardForm(forms.ModelForm):
 #     class Meta:
@@ -28,10 +29,6 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["content"]
-
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 

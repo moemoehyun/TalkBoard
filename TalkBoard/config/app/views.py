@@ -69,11 +69,7 @@ def activation_failed(request):
 def email_sent(request, user_id):
     # ユーザーを取得し、テンプレートに渡す
     User = get_user_model()
-    try:
-        user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
-        return redirect('app:activation_failed')
-    
+    user = get_object_or_404(User, pk=user_id)
     return render(request, 'email_sent.html', {'user': user})
 
 def resend_email(request, user_id):
