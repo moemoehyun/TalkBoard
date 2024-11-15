@@ -100,7 +100,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)  # ログインさせる
-        return redirect('app:login')  # ログインページにリダイレクト
+        return redirect('app:index')  # ログインページにリダイレクト
     else:
         return redirect('app:activation_failed')  # 失敗時のリダイレクト
 # def activate(request, uidb64, token):
