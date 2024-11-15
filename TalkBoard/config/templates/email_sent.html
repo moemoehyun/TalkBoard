@@ -1,3 +1,5 @@
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +8,11 @@
     <title>Check Your Email</title>
 </head>
 <body>
-    <h2>承認用のurlをご登録のメールアドレスに送信致しました。</h2>
-    <p>urlを開いた時点でアカウントが承認されます。（このページは閉じても問題ありません）</p>
 
-    
-    <p>もしメールが届かないときは<a href="{% url 'app:resend_email' user.id %}">ここをクリック</a>.</p>
-    <!-- {% if user.is_authenticated %}
-        <p>もしメールが届かないときは<a href="{% url 'app:resend_email' user.id %}">ここをクリック</a>.</p>
-    {% else %}
-        <p>新しい確認メールをリクエストするにはログインしてください</p>
-    {% endif %} -->
+  <h2>確認メールを送信しました</h2>
+  <p>ご登録いただいたメールアドレスに確認メールを送信しました。</p>
+  <p>メール内のリンクをクリックして、アカウントを有効化してください。</p>
+  <p>もしメールが届かない場合は <a href="{% url 'app:resend_email' user_id %}">メールを再送信</a>.</p>
 </body>
 </html>
+{% endblock %}

@@ -30,7 +30,7 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ["content"]
 
-User = get_user_model()
+# User = get_user_model()
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(

@@ -21,6 +21,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 import os
+from django.utils.encoding import force_bytes
 
 # Create your views here.
 
@@ -44,27 +45,39 @@ def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=True)  # 一旦保存は保留/の逆
+            user = form.save(commit=False)
             user.is_active = False  # ユーザーを一時的に非アクティブにする
             user.save()
-            
-            # ユーザーの確認用メールを送信
+
+            # メール認証リンクを生成
             token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(str(user.pk).encode())
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
             domain = get_current_site(request).domain
-            link = f"http://{domain}/activate/{uid}/{token}/"
             
+            # リストを使わず、文字列として生成する
+            link = f"http://{domain}/activate/{uid}/{token}/"
+            print(type(user.email))  # デバッグ用
+            print(user.email)     # 実際の値を確認
+
+            # linkは文字列なので、rsplitが正しく動作する
             send_mail(
-                'Activate your account',
-                f'Click the link to activate your account: {link}',
+                'ユーザー登録ありがとうございます',
+                f'メール認証リンク: {link}',
                 'from@example.com',
                 [user.email],
             )
-            
-            # メール送信後にリダイレクト
-            return redirect('email_sent')  # サインアップ後にメール送信完了画面にリダイレクト
+            # send_mail(
+            #     'Test Subject',
+            #     'This is a test email.',
+            #     'from@example.com',
+            #     ['test@example.com'],  # ハードコードされたメールアドレスを使用
+            # )
+
+            # リダイレクト先にユーザーIDを渡す
+            return render(request, 'email_sent.html', {"user_id": user.id})
     else:
         form = SignUpForm()
+
     return render(request, "registration/signup.html", {"form": form})
 
 #プロフィールページのビュー
@@ -73,33 +86,9 @@ def profile(request):
     user = request.user
     return render(request, "accounts/profile.html", {"user": user})
 
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            # メールアドレス認証用のトークンを生成
-            token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(user.pk.encode())
-            domain = get_current_site(request).domain
-            link = f"http://{domain}/activate/{uid}/{token}/"
-            
-            # メール送信
-            send_mail(
-                'ユーザー登録ありがとうございます',
-                f'メール認証リンク: {link}',
-                'from@example.com',
-                [user.email],
-            )
-            return redirect('app:email_sent')
-    else:
-        form = RegistrationForm()
-
-    return render(request, 'register.html', {'form': form})
-
 def activate(request, uidb64, token):
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
         user = get_user_model().objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
         user = None
@@ -142,7 +131,7 @@ def resend_email(request, user_id):
         'from@example.com',
         [user.email],
     )
-    return redirect('app:email_sent')
+    return render(request, 'email_sent.html', {"user_id": user.id})
 
 def user_owns_board(view_func):
     @wraps(view_func)
