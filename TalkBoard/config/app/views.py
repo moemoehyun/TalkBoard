@@ -22,6 +22,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 import os
 from django.utils.encoding import force_bytes
+from django.utils.encoding import force_str
 
 # Create your views here.
 
@@ -88,18 +89,34 @@ def profile(request):
 
 def activate(request, uidb64, token):
     try:
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        # uidb64をデコードしてユーザーのPKを取得
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = get_user_model().objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
+        # アカウントを有効化
         user.is_active = True
         user.save()
-        login(request, user)
-        return redirect('app:login')
+        login(request, user)  # ログインさせる
+        return redirect('app:login')  # ログインページにリダイレクト
     else:
-        return redirect('app:activation_failed')
+        return redirect('app:activation_failed')  # 失敗時のリダイレクト
+# def activate(request, uidb64, token):
+#     try:
+#         uid = urlsafe_base64_encode(force_bytes(user.pk))
+#         user = get_user_model().objects.get(pk=uid)
+#     except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+#         user = None
+
+#     if user is not None and default_token_generator.check_token(user, token):
+#         user.is_active = True
+#         user.save()
+#         login(request, user)
+#         return redirect('app:login')
+#     else:
+#         return redirect('app:activation_failed')
     
 def activation_failed(request):
     return render(request, 'activation_failed.html')
