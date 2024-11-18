@@ -3,6 +3,7 @@ from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from django.views.static import serve
 from django.conf import settings
@@ -43,6 +44,7 @@ urlpatterns = [
     path("accounts/logout/", views.logout_view, name="logout"),
     path("accounts/signup/", views.signup, name="signup"),
     path("accounts/profile/", views.profile, name="profile"),
+    path("edit_profile", views.edit_profile, name="edit_profile"),
 
     path("disclaimer", views.disclaimer, name="disclaimer"),
 

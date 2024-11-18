@@ -10,7 +10,8 @@
      {% comment %} Bootstrapのアイコン読み込み {% endcomment %}
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
      {% comment %} CSSファイル読み込み {% endcomment %}
-     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css?v=1' %}">
+     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?v={{ STATIC_VERSION }}">
+     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/style.css?v=1' %}"> -->
      <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 
 </head>
@@ -22,7 +23,9 @@
             <!-- <h1 class="display-4">TalkBoard</h1> -->
             {% if user.is_authenticated %}
             <div>
-                <p class="text-light">「{{ user.username }}」でログイン中</p>
+                <p class="text-light">
+                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" alt="User Avatar" class="avatar">
+                    <a href="{% url 'app:profile' %}">「{{ user.username }}」でログイン中</a></p>
             </div>
             <div>
                 <form action="{% url 'logout' %}" method="post" style="display: inline;">

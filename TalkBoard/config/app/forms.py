@@ -4,11 +4,18 @@ from django.forms import ModelForm
 from django import forms
 from .models import Board, Comment, Favorite, Contact
 from django.contrib.auth import get_user_model
+from .models import Profile
 
 # class BoardForm(forms.ModelForm):
 #     class Meta:
 #         model = Board
 #         fields = ["title", "content"]
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar']
 
 class BoardForm(forms.ModelForm):
     title = forms.CharField(

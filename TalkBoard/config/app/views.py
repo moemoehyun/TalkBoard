@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BoardForm, SignUpForm, CommentForm, FavoriteForm, ContactForm, RegistrationForm
-from .models import Board, Comment, Favorite
+from .forms import ProfileForm
+from .models import Board, Comment, Favorite, Profile
 from django.views.generic.edit import FormView
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.views import LoginView
@@ -23,8 +24,31 @@ from django.contrib.auth.models import User
 import os
 from django.utils.encoding import force_bytes
 from django.utils.encoding import force_str
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your views here.
+for user in User.objects.all():
+    Profile.objects.get_or_create(user=user)
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # 適切なリダイレクト先に変更
+    else:
+        form = ProfileForm(instance=request.user.profile)
+    return render(request, 'edit_profile.html', {'form': form})
 
 #ログアウト
 def logout_view(request):

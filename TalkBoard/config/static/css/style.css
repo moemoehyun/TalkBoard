@@ -15,7 +15,6 @@ body {
     font-family: "Hiragino Kaku Gothic ProN", sans-serif;
 }
 
-
 /* 背景カラー */
 .bg-success {
     background-color: #3688e0 !important;
@@ -27,10 +26,16 @@ body {
 } */
 
 /* 通常モードのスタイル */
-header {
+/* header {
+    display: flex;
     background-color: rgb(109, 217, 217);
     text-align: center;
     width: 100%;
+} */
+header {
+    display: flex;
+    align-items: center; /* 子要素を中央揃え */
+    justify-content: space-between; /* 必要に応じて水平配置 */
 }
 
 footer {
@@ -38,7 +43,7 @@ footer {
 }
 
 main {
-    padding: 0 20px;
+    padding: 0 10px;
 }
 
 /* ダークモードボタンのスタイル */
@@ -72,11 +77,11 @@ main {
 
 /* PC用とスマホ用のレスポンシブスタイル */
 .mobile-view {
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .desktop-view {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 /* CSS側: <desktop>タグの代わりに .desktop クラスを使ったセレクタに修正 */
@@ -89,4 +94,20 @@ button.btn.btn-primary {
 }
 button.btn.btn-outline-primary {
     padding: 4px 8px; /* 上下10px、左右20px */
+}
+
+.avatar {
+    width: 40px; /* 幅を指定 */
+    height: 40px; /* 高さを指定 */
+    border-radius: 50%; /* 丸型にする */
+    object-fit: cover; /* 画像を中央にトリミングしてフィットさせる */
+    border: 2px solid #ccc; /* 任意の枠線を追加 */
+}
+
+.large_avatar {
+    width: 110px; /* 幅を指定 */
+    height: 110px; /* 高さを指定 */
+    border-radius: 50%; /* 丸型にする */
+    object-fit: cover; /* 画像を中央にトリミングしてフィットさせる */
+    border: 2px solid #ccc; /* 任意の枠線を追加 */
 }
