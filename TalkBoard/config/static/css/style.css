@@ -46,6 +46,10 @@ main {
     padding: 0 10px;
 }
 
+.img-fluid{
+    height: 300px; /* 高さを指定 */
+}
+
 /* ダークモードボタンのスタイル */
 #darkmodeBtn {
     background-color: gray;

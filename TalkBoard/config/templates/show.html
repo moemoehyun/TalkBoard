@@ -10,17 +10,16 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">戻る</button>
         </form>
-        <h2>■{{ board.title }}</h2>
-        <h4>{{ board.content|linebreaks }}</h4>
         {% if board.image %}
             <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
         {% endif %}
         {% if board.video %}
             <video width="320" height="240" controls>
             <source src="{{ board.video.url }}" type="video/mp4">
-        お使いのブラウザは動画タグに対応していません。
     </video>
 {% endif %}
+        <h2>{{ board.title }}</h2>
+        <h4>{{ board.content|linebreaks }}</h4>
         <p>{{ board.user }}さんの投稿</p>
         <p>
             作成：{{ board.created_at|date:"Y/m/d H:i" }}</br>

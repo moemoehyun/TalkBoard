@@ -6,7 +6,7 @@
 {% block content %}
 <body class="dark">
     <section>
-    <h1>■みんなの投稿一覧</h1>
+    <h1>みんなの投稿一覧</h1>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
     <div class="col-md-3">
         <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
@@ -70,7 +70,9 @@
             <tr>
                 <td scope="col">{{ board.id }}</td>
                 <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
-                <td scope="col">{{ board.user }}</td>
+                <td scope="col">
+                    <!-- <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar"> -->
+                    {{ board.user }}</td>
                 <td scope="col">{{ board.comment_count }}</td>
                 <td>
                     {% if user.is_authenticated %}

@@ -8,7 +8,7 @@
 <section class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" alt="User Avatar" class="large_avatar">
+            <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="large_avatar">
             <!-- <img src="{{ user.profile.avatar.url }}" alt="User Avatar"> -->
             <p><h2>{{ user.username }}</h2></p>
             {% if user == request.user %}

@@ -24,7 +24,7 @@
             {% if user.is_authenticated %}
             <div>
                 <p class="text-light">
-                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" alt="User Avatar" class="avatar">
+                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
                     <a href="{% url 'app:profile' %}">「{{ user.username }}」でログイン中</a></p>
             </div>
             <div>
