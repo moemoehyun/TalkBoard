@@ -27,10 +27,17 @@ body {
 } */
 
 /* 通常モードのスタイル */
-header {
+/* header {
+    display: flex;
     background-color: rgb(109, 217, 217);
     text-align: center;
     width: 100%;
+} */
+header {
+    display: flex;
+    align-items: center; /* 子要素を中央揃え */
+    justify-content: space-between; /* 必要に応じて水平配置 */
+    height: 60px; /* ヘッダーの高さを明示的に設定 */
 }
 
 footer {

@@ -360,3 +360,6 @@ class CustomLoginView(LoginView):
 
 def option(request):
     return render(request, "option.html")
+
+def disclaimer(request):
+    return render(request, "disclaimer.html")

@@ -44,6 +44,8 @@ urlpatterns = [
     path("accounts/signup/", views.signup, name="signup"),
     path("accounts/profile/", views.profile, name="profile"),
 
+    path("disclaimer", views.disclaimer, name="disclaimer"),
+
 ]
 
 if settings.DEBUG:
