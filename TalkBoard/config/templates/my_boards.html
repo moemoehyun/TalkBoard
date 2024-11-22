@@ -24,35 +24,28 @@
         </form>
     <table class="table">
         <colgroup>
-            <col style="width: 10%;">
-            <col style="width: 25%;">
-            <col style="width: 15%;">
+            <col style="width: 20%;">
+            <col style="width: 30%;">
             <col style="width: 10%;">
             <col style="width: 15%;">
             <col style="width: 25%;">
         </colgroup>
         <thead>
             <tr>
-                <th scope="col">ID
-                    <a href="{% url 'app:sort' %}?sort=id&direction={{ next_direction|default:'asc' }}">
-                        {% include "direction.html" with sort_filed='id' field=sort_by direction=direction %}
-                    </a>
-                </th>
-                <th scope="col">タイトル
+                <th scope="col"></th>
+                <th scope="col">
                 <!-- <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='title' field=sort_by direction=direction %}
                 </a> -->
-                <th scope="col">投稿者</th>
-            <th scope="col">コメント
+            <th scope="col">
                 <!-- <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='comment_count' field=sort_by direction=direction %}
                 </a> -->
             </th>
             <th scope="col">
-                マーク
             </th>
                 <th scope="col">
-                    投稿
+                    投稿順
                 <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
                 </a>
@@ -62,9 +55,9 @@
         <tbody>
             {% for board in boards %}
             <tr>
-                <td scope="col">{{ board.id }}</td>
+                <td scope="col"><img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
+                    {{ board.user }}</td>
                 <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
-                <td scope="col">{{ board.user }}</td>
                 <td scope="col">{{ board.comment_count }}</td>
                 <td>
                     {% if user.is_authenticated %}

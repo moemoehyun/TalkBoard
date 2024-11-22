@@ -5,6 +5,8 @@
 
 {% block content %}
 <body class="dark">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <div class="contents">
     <section>
     <h1>みんなの投稿一覧</h1>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
@@ -13,20 +15,19 @@
     </div>
     <div class="col-md-2">
         <select name="search_type" class="form-select">
-            <option value="partial">部分一致</option>
-            <option value="prefix">前方一致</option>
-            <option value="suffix">後方一致</option>
+            <option value="partial">部分</option>
+            <option value="prefix">前方</option>
+            <option value="suffix">後方</option>
         </select>
     </div>
     <div class="col-md-1">
-        <button type="submit" class="btn btn-light">検索</button>
+        <button type="submit" class="btn btn-light">🔍</button>
         </div>
     </form>
     <table class="table">
         <colgroup>
-            <col style="width: 10%;">
-            <col style="width: 25%;">
-            <col style="width: 15%;">
+            <col style="width: 20%;">
+            <col style="width: 30%;">
             <col style="width: 10%;">
             <col style="width: 15%;">
             <col style="width: 25%;">
@@ -34,26 +35,20 @@
         </colgroup>
         <thead>
             <tr>
-                <th scope="col">ID
-                    <a href="{% url 'app:sort' %}?sort=id&direction={{ next_direction|default:'asc' }}">
-                        {% include "direction.html" with sort_filed='id' field=sort_by direction=direction %}
-                    </a>
-                </th>
-                <th scope="col">タイトル
+                <th scope="col"></th>
+                <th scope="col">
                 <!-- <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='title' field=sort_by direction=direction %}
                 </a> -->
-                <th scope="col">投稿者</th>
-            <th scope="col">コメント
+                </th>
+            <th scope="col">
                 <!-- <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='comment_count' field=sort_by direction=direction %}
                 </a> -->
             </th>
-            <th scope="col">
-                マーク
-            </th>
+            <th scope="col"></th>
                 <th scope="col">
-                    投稿
+                    投稿順
                 <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
                 </a>
@@ -68,12 +63,15 @@
         <tbody>
             {% for board in boards %}
             <tr>
-                <td scope="col">{{ board.id }}</td>
-                <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
                 <td scope="col">
-                    <!-- <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar"> -->
+                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
                     {{ board.user }}</td>
-                <td scope="col">{{ board.comment_count }}</td>
+                <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
+                
+                <td scope="col">
+                    <p><img src="{% static 'images/coments_icon.png' %}" alt="アイコン" height="35" class="me-4"></p>
+                    <p>{{ board.comment_count }}</p>
+                </td>
                 <td>
                     {% if user.is_authenticated %}
                         {% if board.is_favorite %}
@@ -117,6 +115,7 @@
     {% endif %} 
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
+    </div>
 </body>
 
 {% endblock %}

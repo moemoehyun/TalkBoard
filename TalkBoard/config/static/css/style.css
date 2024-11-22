@@ -1,16 +1,32 @@
 /* グローバルリセット */
 * {
-    padding: 0;
     margin: 0;
+    padding: 0;
     box-sizing: border-box;
     text-decoration: none;
     color: inherit;
     list-style-position: inside;
 }
 
+/* レイアウト用 */
+.layout {
+    display: flex; /* 子要素を横並びに */
+    width: 100%;
+}
+
+.container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding:0 0;
+}
+
 /* 共通スタイル */
 body {
     /* font-size: 16px; */
+    /* background-color: #e8f0f9; */
+    margin: 0;
+    padding: 0;
     color: #363636;
     font-family: "Hiragino Kaku Gothic ProN", sans-serif;
 }
@@ -33,6 +49,16 @@ body {
     width: 100%;
 } */
 header {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1da1f2;
+    color: white;
+    justify-content: center;
+    z-index: 10;
+
     display: flex;
     align-items: center; /* 子要素を中央揃え */
     justify-content: space-between; /* 必要に応じて水平配置 */
@@ -43,7 +69,7 @@ footer {
 }
 
 main {
-    padding: 0 10px;
+    padding: 0 0px;
 }
 
 .img-fluid{
@@ -80,17 +106,69 @@ main {
 }
 
 /* PC用とスマホ用のレスポンシブスタイル */
-.mobile-view {
+/* .mobile-view {
     font-size: 12px;
 }
 
 .desktop-view {
-    font-size: 16px;
+    font-size: 15px;
+} */
+
+.menu {
+    width: 200px; /* サイドバーの幅 */
+    position: sticky;
+    top: 0;
+  }
+
+  /* モバイルビュー */
+.mobile header {
+    background-color: #28a745;
+    padding: 10px;
+  }
+
+
+.mobile header img {
+  height: 40px;
 }
 
-/* CSS側: <desktop>タグの代わりに .desktop クラスを使ったセレクタに修正 */
-.mobile-view .menu .desktop {
-    display: none !important; /* モバイルビューでは非表示にする */
+.mobile .btn {
+    margin-left: 10px;
+  }
+
+/* モバイルビュー: 画面幅が768px以下の場合 */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+      }
+    
+      .colbox {
+        margin-left: 0;
+        padding-left: 0;
+      }
+    
+      .mobile header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999; /* ヘッダーが最前面に来るように */
+      }
+    
+      .mobile header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+}
+
+/* デスクトップビュー: 画面幅が769px以上の場合 */
+@media (min-width: 769px) {
+    .menu .desktop {
+        display: block !important; /* デスクトップメニューを表示 */
+    }
+    .menu .mobile {
+        display: none !important; /* モバイルメニューを非表示 */
+    }
 }
 
 button.btn.btn-primary {
@@ -115,3 +193,79 @@ button.btn.btn-outline-primary {
     object-fit: cover; /* 画像を中央にトリミングしてフィットさせる */
     border: 2px solid #ccc; /* 任意の枠線を追加 */
 }
+
+/* サイドバー */
+/* .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 200px;
+    background-color: #1da1f2;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; コンテンツより前面に表示
+} */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #1a91da; /* サイドバーの背景色 */
+    padding: 20px;
+    z-index: 1000; /* サイドバーがメインコンテンツの上に表示されるように */
+  }
+
+.sidebar-header {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.sidebar-menu {
+    background-color: #1a91da;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin: 0.5rem 0;
+}
+
+.sidebar-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem;
+    display: block;
+    border-radius: 5px;
+}
+
+/* メインコンテンツ */
+.contents {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f5f8fa;
+}
+
+.text_right{
+    text-align: right;
+}
+
+.rowbox{
+    display: flex;
+    min-height: 100vh;
+    padding: 0 0px;
+    width: 100%;
+}
+
+.colbox {
+    margin-left: 0px; /* サイドバーがメインコンテンツを押し出さないように */
+    flex-grow: 1;
+    padding-left: 0px; /* コンテンツ領域のパディング */
+  }
