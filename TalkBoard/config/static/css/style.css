@@ -81,7 +81,7 @@ main {
 
 /* PC用とスマホ用のレスポンシブスタイル */
 .mobile-view {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .desktop-view {

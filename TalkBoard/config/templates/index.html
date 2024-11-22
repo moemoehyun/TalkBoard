@@ -25,55 +25,37 @@
     <table class="table">
         <colgroup>
             <col style="width: 10%;">
-            <col style="width: 25%;">
-            <col style="width: 15%;">
-            <col style="width: 10%;">
-            <col style="width: 15%;">
-            <col style="width: 25%;">
+            <col style="width: 55%;">
+            <col style="width: 7%;">
+            <col style="width: 8%;">
+            <col style="width: 20%;">
             <!-- <col style="width: 15%;"> -->
         </colgroup>
-        <thead>
+        <!-- <thead>
             <tr>
-                <th scope="col">ID
-                    <a href="{% url 'app:sort' %}?sort=id&direction={{ next_direction|default:'asc' }}">
-                        {% include "direction.html" with sort_filed='id' field=sort_by direction=direction %}
-                    </a>
-                </th>
-                <th scope="col">タイトル
-                <!-- <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='title' field=sort_by direction=direction %}
-                </a> -->
                 <th scope="col">投稿者</th>
-            <th scope="col">コメント
-                <!-- <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='comment_count' field=sort_by direction=direction %}
-                </a> -->
-            </th>
-            <th scope="col">
-                マーク
-            </th>
+                <th scope="col">タイトル</th>
+            <th scope="col">コメント</th>
+            <th scope="col">マーク</th>
                 <th scope="col">
                     投稿
                 <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
                     {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
                 </a>
                 </th>
-                <!-- <th scope="col">更新
-                <a href="{% url 'app:sort' %}?sort=updated_at&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='updated_at' field=sort_by direction=direction %}
-                </a>
-            </th> -->
             </tr>
-        </thead>
+        </thead> -->
         <tbody>
             {% for board in boards %}
             <tr>
-                <td scope="col">{{ board.id }}</td>
+                <td scope="col">
+                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
+                    {{ board.user }}</td>
                 <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
                 <td scope="col">
-                    <!-- <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar"> -->
-                    {{ board.user }}</td>
-                <td scope="col">{{ board.comment_count }}</td>
+                    <p><img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28"></p>
+                    <p>{{ board.comment_count }}</p>
+                </td>
                 <td>
                     {% if user.is_authenticated %}
                         {% if board.is_favorite %}
