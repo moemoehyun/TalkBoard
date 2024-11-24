@@ -432,3 +432,6 @@ def option(request):
 
 def disclaimer(request):
     return render(request, "disclaimer.html")
+
+def privacypolicy(request):
+    return render(request, "privacypolicy.html")

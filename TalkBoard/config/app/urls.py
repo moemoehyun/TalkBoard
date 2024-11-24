@@ -49,7 +49,7 @@ urlpatterns = [
     path("accounts/edit_profile", views.edit_profile, name="edit_profile"),
 
     path("disclaimer", views.disclaimer, name="disclaimer"),
-
+    path("privacypolicy", views.privacypolicy, name="privacypolicy")
 ]
 
 if settings.DEBUG:

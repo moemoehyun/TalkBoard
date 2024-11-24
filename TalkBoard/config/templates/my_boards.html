@@ -84,8 +84,9 @@
             {% endfor %}
         </tbody>
         </table>
-        <a href="{% url 'app:index' %}" class="btn btn-primary">グローバルへ戻る</a>
-        <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">マークした投稿</a>
+        <a href="{% url 'app:index' %}" class="btn btn-primary">グローバル</a>
+        <a href="{% url 'app:my_boards' %}" class="btn btn-primary">自分の投稿</a>
+        <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">ブックマーク</a>
     </section>
 
     <!-- ぺージネーションのリンク表示 -->
