@@ -27,6 +27,8 @@ from django.utils.encoding import force_str
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib import messages
+from django.http import HttpResponseBadRequest
+from django.db.models import Value, BooleanField
 
 # Create your views here.
 for user in User.objects.all():
@@ -340,37 +342,61 @@ def board_sort(request):
 @login_required
 def add_favorite(request):
     if request.method == "POST":
-        form = FavoriteForm(request.POST)
-        if form.is_valid():
-            form.instance.user = request.user
-            form.save()
-    # 元のページにリダイレクトする。リンク元情報がない場合はデフォルトで "app:index"
-    return redirect(request.META.get('HTTP_REFERER', 'app:index'))
+        board_id = request.POST.get("board")
+        if not board_id:
+            return HttpResponseBadRequest("Board ID is required.")
+
+        # 投稿が存在するか確認
+        board = get_object_or_404(Board, id=board_id)
+
+        # 重複を防ぐため既存のレコードを確認
+        Favorite.objects.get_or_create(user=request.user, board=board)
+
+        # 元のページにリダイレクト
+        return redirect(request.META.get('HTTP_REFERER', 'app:index'))
+    return HttpResponseBadRequest("Invalid request method.")
 
 @login_required
 def remove_favorite(request):
     if request.method == "POST":
         board_id = request.POST.get("board")
-        if board_id:
-            board = get_object_or_404(Board, id=board_id)
-            favorite = Favorite.objects.filter(user=request.user, board=board).first()
-            if favorite:
-                favorite.delete()
+        if not board_id:
+            return HttpResponseBadRequest("Board ID is required.")
 
-    # 元のページにリダイレクトする。リンク元情報がない場合はデフォルトで "app:index"
-    return redirect(request.META.get('HTTP_REFERER', 'app:index'))
+        # 投稿が存在するか確認
+        board = get_object_or_404(Board, id=board_id)
+
+        # お気に入りを削除
+        Favorite.objects.filter(user=request.user, board=board).delete()
+
+        # 元のページにリダイレクト
+        return redirect(request.META.get('HTTP_REFERER', 'app:index'))
+    return HttpResponseBadRequest("Invalid request method.")
 
 @login_required
 def favorite_boards(request):
-    # ユーザーのお気に入りの投稿を取得
-    favorites = Favorite.objects.filter(user=request.user)
-    boards = [favorite.board for favorite in favorites]
-    
+    # ユーザーのお気に入り投稿を取得
+    user = request.user
+
+    # お気に入りの投稿を取得して is_favorite を設定
+    favorites = Favorite.objects.filter(user=user).select_related("board")
+    boards = Board.objects.filter(id__in=[favorite.board.id for favorite in favorites]).annotate(
+        is_favorite=Value(True, output_field=BooleanField()),
+        comment_count=Count("comments")
+    ).order_by("-updated_at")
+
+    # ページネーション
+    paginator = Paginator(boards, 10)
+    page_number = request.GET.get("page")
+    boards = paginator.get_page(page_number)
+
+    # コンテキストに渡す
     context = {
         'boards': boards,
     }
-    
+
     return render(request, 'favorite_boards.html', context)
+
 
 def contact(request):
     if request.method == "POST":

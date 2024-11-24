@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body class="dark">
-    <header>この設定はPCのキャッシュを利用して反映されます</header>
+    <header>この設定は端末のキャッシュを利用して反映されます</header>
         <form action="{% url 'app:index' %}" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary">戻る</button>

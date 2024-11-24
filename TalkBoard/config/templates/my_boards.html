@@ -1,56 +1,43 @@
 {% extends "base.html" %}
+{% load elapsed_time %}
 {% load static %}
 
-{% block title %}あなたの投稿一覧{% endblock %}
+{% block title %}全ての投稿一覧{% endblock %}
 
 {% block content %}
 <body class="dark">
     <section>
-    <h2>■あなたの投稿一覧</h2>
+    <h2>あなたの投稿</h2>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
-        <div class="col-md-3">
-            <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
+    <div class="col-md-3">
+        <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
+    </div>
+    <div class="col-md-2">
+        <select name="search_type" class="form-select">
+            <option value="partial">部分一致</option>
+            <option value="prefix">前方一致</option>
+            <option value="suffix">後方一致</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button type="submit" class="btn btn-light">🔍</button>
         </div>
-        <div class="col-md-2">
-            <select name="search_type" class="form-select">
-                <option value="partial">部分一致</option>
-                <option value="prefix">前方一致</option>
-                <option value="suffix">後方一致</option>
-            </select>
-        </div>
-        <div class="col-md-1">
-            <button type="submit" class="btn btn-light">🔍</button>
-            </div>
-        </form>
+    </form>
     <table class="table">
         <colgroup>
             <col style="width: 10%;">
-            <col style="width: 25%;">
-            <col style="width: 15%;">
-            <col style="width: 10%;">
-            <col style="width: 15%;">
-            <col style="width: 25%;">
+            <col style="width: 58%;">
+            <col style="width: 7%;">
+            <col style="width: 8%;">
+            <col style="width: 17%;">
+            <!-- <col style="width: 15%;"> -->
         </colgroup>
-        <thead>
+        <!-- <thead>
             <tr>
-                <th scope="col">ID
-                    <a href="{% url 'app:sort' %}?sort=id&direction={{ next_direction|default:'asc' }}">
-                        {% include "direction.html" with sort_filed='id' field=sort_by direction=direction %}
-                    </a>
-                </th>
-                <th scope="col">タイトル
-                <!-- <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='title' field=sort_by direction=direction %}
-                </a> -->
                 <th scope="col">投稿者</th>
-            <th scope="col">コメント
-                <!-- <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='comment_count' field=sort_by direction=direction %}
-                </a> -->
-            </th>
-            <th scope="col">
-                マーク
-            </th>
+                <th scope="col">タイトル</th>
+            <th scope="col">コメント</th>
+            <th scope="col">マーク</th>
                 <th scope="col">
                     投稿
                 <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
@@ -58,14 +45,18 @@
                 </a>
                 </th>
             </tr>
-        </thead>
+        </thead> -->
         <tbody>
             {% for board in boards %}
             <tr>
-                <td scope="col">{{ board.id }}</td>
+                <td scope="col">
+                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
+                    {{ board.user }}</td>
                 <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
-                <td scope="col">{{ board.user }}</td>
-                <td scope="col">{{ board.comment_count }}</td>
+                <td scope="col">
+                    <p><img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28"></p>
+                    <p>{{ board.comment_count }}</p>
+                </td>
                 <td>
                     {% if user.is_authenticated %}
                         {% if board.is_favorite %}
@@ -83,16 +74,34 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                    <td scope="col">{{ board.created_at|date:"Y/m/d H:i" }}</td>
-                
+                    <td scope="col">{{ board.created_at|elapsed_time }}
+                        <!-- {{ board.created_at|date:"Y/m/d H:i" }} -->
+                    </td>
+                    <!-- <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td> -->
                 </tr>
+            {% empty %}
+                <p>該当するスレッドが見つかりませんでした。</p>
             {% endfor %}
         </tbody>
         </table>
         <a href="{% url 'app:index' %}" class="btn btn-primary">グローバルへ戻る</a>
         <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">マークした投稿</a>
     </section>
+
+    <!-- ぺージネーションのリンク表示 -->
+    {% if boards.has_previous %}
+    <a href="?page=1">&laquo; 最初</a>
+    <a href="?page={{ boards.previous_page_number}}">前へ</a>
+    {% endif %}
+
+    <a href="#">ページ {{ boards.number }} / {{ boards.paginator.num_pages }}</a>
+
+    {% if boards.has_next %}
+    <a href="?page={{ boards.next_page_number }}">次へ</a>
+    <a href="?page={{ boards.paginator.num_pages }}">最後 &raquo;</a>
+    {% endif %} 
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
-    </body>
+</body>
+
 {% endblock %}
