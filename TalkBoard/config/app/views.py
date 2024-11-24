@@ -26,6 +26,7 @@ from django.utils.encoding import force_bytes
 from django.utils.encoding import force_str
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib import messages
 
 # Create your views here.
 for user in User.objects.all():
@@ -287,6 +288,7 @@ def delete(request, pk):
     board = Board.objects.get(pk=pk)
     if request.method == "POST":
         board.delete()
+        messages.success(request, "投稿を削除しました。")
         return redirect("app:index")
     return redirect("app:index")
 
