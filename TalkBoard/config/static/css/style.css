@@ -21,6 +21,12 @@ body {
     color: #363636;
 }
 
+/* 通常のリンクの色を白に設定 */
+.white {
+    color: white; /* 通常のリンクの色 */
+    /* text-decoration: none; 下線を消す場合 */
+}
+
 /* .bg-secondary{
     Background: #d4ecff;
 } */
@@ -56,6 +62,31 @@ main {
 
 .img-fluid{
     height: 300px; /* 高さを指定 */
+}
+
+.image-container {
+    position: relative;
+    width: 100%; /* 横幅を画面いっぱいに */
+    max-height: 400px; /* 最大の縦幅を指定 */
+    overflow: hidden; /* 縦に長い場合に余分な部分を隠す */
+}
+
+.image-container img {
+    width: 100%; /* 画像の横幅を親要素に合わせる */
+    height: auto; /* アスペクト比を保つ */
+    display: block;
+}
+
+
+.image-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* グラデーション部分の高さ */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    pointer-events: none; /* グラデーションがクリックを妨げないようにする */
 }
 
 /* ダークモードボタンのスタイル */
@@ -117,7 +148,7 @@ button.btn.btn-outline-primary {
     height: 40px; /* 高さを指定 */
     border-radius: 50%; /* 丸型にする */
     object-fit: cover; /* 画像を中央にトリミングしてフィットさせる */
-    border: 2px solid #ccc; /* 任意の枠線を追加 */
+    border: 0.1px solid #0d1231; /* 任意の枠線を追加 */
 }
 
 .large_avatar {
@@ -126,4 +157,38 @@ button.btn.btn-outline-primary {
     border-radius: 50%; /* 丸型にする */
     object-fit: cover; /* 画像を中央にトリミングしてフィットさせる */
     border: 2px solid #ccc; /* 任意の枠線を追加 */
+}
+
+/* モーダルウィンドウ全体 */
+.modal {
+    display: none; /* 初期状態は非表示 */
+    position: fixed;
+    z-index: 1000; /* 他の要素より前面に表示 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* 背景を暗くする */
+}
+
+/* モーダル内の画像 */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%; /* 画像が画面内に収まるように制限 */
+    max-height: 90%;
+    object-fit: contain; /* 画像が縦横比を保って収まるように調整 */
+}
+
+/* 閉じるボタン */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 10px black;
 }

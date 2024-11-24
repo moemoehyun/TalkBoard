@@ -5,13 +5,19 @@
 
 {% block content %}
 <body class="dark">
+    <div id="imageModal" class="modal" style="display:none;">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
     <section>
         <form action="{% url 'app:index' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">戻る</button>
         </form>
         {% if board.image %}
-            <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
+        <div class="image-container">
+                <img src="{{ board.image.url }}" alt="{{ board.title }}" class="post-image">
+        </div>
         {% endif %}
         {% if board.video %}
             <video width="320" height="240" controls>
@@ -90,5 +96,6 @@
         </ul>
     </section>
     <script src="{% static 'js/darkmode.js' %}"></script>
+    <script src="{% static 'js/image_modal.js' %}"></script>
 </body>
 {% endblock %}    
