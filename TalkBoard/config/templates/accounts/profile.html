@@ -12,8 +12,9 @@
             <!-- <img src="{{ user.profile.avatar.url }}" alt="User Avatar"> -->
             <p><h2>{{ user.username }}</h2></p>
             {% if user == request.user %}
-                <p>↓この情報は他人には表示されません</p>
+                <p>↓これより下の情報は他人には表示されません</p>
                 <p>メールアドレス：{{ user.email }}</p>
+                <a href="{% url 'app:edit_profile' %}" class="btn btn-primary">プロフィール編集</a>
             {% endif %}
         </div>
     </div>

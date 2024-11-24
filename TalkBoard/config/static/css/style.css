@@ -36,6 +36,10 @@ h1{
     margin: 10px 0px;
 }
 
+h2{
+    margin: 10px 0px;
+}
+
 header {
     display: flex;
     align-items: center; /* 子要素を中央揃え */

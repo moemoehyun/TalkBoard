@@ -45,10 +45,10 @@ def edit_profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # 適切なリダイレクト先に変更
+            return redirect('app:profile')  # 適切なリダイレクト先に変更
     else:
         form = ProfileForm(instance=request.user.profile)
-    return render(request, 'edit_profile.html', {'form': form})
+    return render(request, 'accounts/edit_profile.html', {'form': form})
 
 #ログアウト
 def logout_view(request):
@@ -342,16 +342,22 @@ def add_favorite(request):
         if form.is_valid():
             form.instance.user = request.user
             form.save()
-            return redirect("app:index")
-    return redirect("app:index")
+    # 元のページにリダイレクトする。リンク元情報がない場合はデフォルトで "app:index"
+    return redirect(request.META.get('HTTP_REFERER', 'app:index'))
 
 @login_required
 def remove_favorite(request):
     if request.method == "POST":
-        favorite = Favorite.objects.get(user=request.user, board=request.POST.get("board"))
-        favorite.delete()
-        return redirect("app:index")
-    return redirect("app:index")
+        board_id = request.POST.get("board")
+        if board_id:
+            board = get_object_or_404(Board, id=board_id)
+            favorite = Favorite.objects.filter(user=request.user, board=board).first()
+            if favorite:
+                favorite.delete()
+
+    # 元のページにリダイレクトする。リンク元情報がない場合はデフォルトで "app:index"
+    return redirect(request.META.get('HTTP_REFERER', 'app:index'))
+
 
 def contact(request):
     if request.method == "POST":

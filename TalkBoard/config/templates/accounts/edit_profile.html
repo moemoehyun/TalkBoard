@@ -4,7 +4,9 @@
 {% block title %}プロフィール編集{% endblock %}
 
 {% block content %}
-<img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" alt="User Avatar" class="large_avatar">
+<h2>プロフィール編集</h2>
+<p><a href="{% url 'app:profile' %}" class="btn btn-primary">戻る</a></p>
+<p><img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" alt="User Avatar" class="large_avatar"></p>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
