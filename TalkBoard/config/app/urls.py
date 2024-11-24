@@ -35,8 +35,10 @@ urlpatterns = [
     path("sort/", views.board_sort, name="sort"),
     path("add_favorite/", views.add_favorite, name="add_favorite"),
     path("remove_favorite/", views.remove_favorite, name="remove_favorite"),
+    path('favorites_boards/', views.favorite_boards, name='favorite_boards'),  # お気に入りページの URL
     path("contact/", views.contact, name="contact"),
     path("contact/success", views.contact_success, name="contact_success"),
+
 
     path("option", views.option, name="option"),
 

@@ -89,8 +89,8 @@
             {% endfor %}
         </tbody>
         </table>
-        <a href="{% url 'app:new' %}" class="btn btn-primary">新規投稿画面</a>
-        <a href="{% url 'app:index' %}" class="btn btn-primary">みんなの投稿一覧</a>
+        <a href="{% url 'app:index' %}" class="btn btn-primary">グローバルへ戻る</a>
+        <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">マークした投稿</a>
     </section>
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>

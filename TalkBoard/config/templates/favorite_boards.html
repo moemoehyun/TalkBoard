@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}あなたの投稿一覧{% endblock %}
+
+{% block content %}
+<body class="dark">
+    <section>
+    <h2>■マークした投稿</h2>
+    <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
+        <div class="col-md-3">
+            <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
+        </div>
+        <div class="col-md-2">
+            <select name="search_type" class="form-select">
+                <option value="partial">部分一致</option>
+                <option value="prefix">前方一致</option>
+                <option value="suffix">後方一致</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-light">🔍</button>
+            </div>
+        </form>
+    <table class="table">
+        <colgroup>
+            <col style="width: 10%;">
+            <col style="width: 25%;">
+            <col style="width: 15%;">
+            <col style="width: 10%;">
+            <col style="width: 15%;">
+            <col style="width: 25%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">ID
+                    <a href="{% url 'app:sort' %}?sort=id&direction={{ next_direction|default:'asc' }}">
+                        {% include "direction.html" with sort_filed='id' field=sort_by direction=direction %}
+                    </a>
+                </th>
+                <th scope="col">タイトル
+                <!-- <a href="{% url 'app:sort' %}?sort=title&direction={{ next_direction|default:'asc' }}">
+                    {% include "direction.html" with sort_filed='title' field=sort_by direction=direction %}
+                </a> -->
+                <th scope="col">投稿者</th>
+            <th scope="col">コメント
+                <!-- <a href="{% url 'app:sort' %}?sort=comment_count&direction={{ next_direction|default:'asc' }}">
+                    {% include "direction.html" with sort_filed='comment_count' field=sort_by direction=direction %}
+                </a> -->
+            </th>
+            <th scope="col">
+                マーク
+            </th>
+                <th scope="col">
+                    投稿
+                <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
+                    {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
+                </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for board in boards %}
+            <tr>
+                <td scope="col">{{ board.id }}</td>
+                <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
+                <td scope="col">{{ board.user }}</td>
+                <td scope="col">{{ board.comment_count }}</td>
+                <td>
+                    {% if user.is_authenticated %}
+                        {% if board.is_favorite %}
+                            <form action="{% url 'app:remove_favorite' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="board" value="{{ board.id }}">
+                                <button type="submit" class="btn btn-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'app:add_favorite' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="board" value="{{ board.id }}">
+                                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                    <td scope="col">{{ board.created_at|date:"Y/m/d H:i" }}</td>
+                
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <a href="{% url 'app:index' %}" class="btn btn-primary">グローバルへ戻る</a>
+        <a href="{% url 'app:my_boards' %}" class="btn btn-primary">自分の投稿</a>
+    </section>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+    <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
+    </body>
+{% endblock %}

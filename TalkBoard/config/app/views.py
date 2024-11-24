@@ -358,6 +358,17 @@ def remove_favorite(request):
     # 元のページにリダイレクトする。リンク元情報がない場合はデフォルトで "app:index"
     return redirect(request.META.get('HTTP_REFERER', 'app:index'))
 
+@login_required
+def favorite_boards(request):
+    # ユーザーのお気に入りの投稿を取得
+    favorites = Favorite.objects.filter(user=request.user)
+    boards = [favorite.board for favorite in favorites]
+    
+    context = {
+        'boards': boards,
+    }
+    
+    return render(request, 'favorite_boards.html', context)
 
 def contact(request):
     if request.method == "POST":
