@@ -32,6 +32,10 @@ body {
     text-align: center;
     width: 100%;
 } */
+h1{
+    margin: 10px 0px;
+}
+
 header {
     display: flex;
     align-items: center; /* 子要素を中央揃え */
@@ -94,10 +98,14 @@ main {
 }
 
 button.btn.btn-primary {
-    padding: 4px 8px; /* 上下10px、左右20px */
+    padding: 4px 8px; /* 上下、左右*/
 }
 button.btn.btn-outline-primary {
-    padding: 4px 8px; /* 上下10px、左右20px */
+    padding: 4px 8px; 
+}
+
+.container{
+    padding: 0px 5px;
 }
 
 .avatar {

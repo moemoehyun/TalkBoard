@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load elapsed_time %}
 {% load static %}
 
 {% block title %}全ての投稿一覧{% endblock %}
@@ -73,7 +74,9 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                    <td scope="col">{{ board.created_at|date:"Y/m/d H:i" }}</td>
+                    <td scope="col">{{ board.created_at|elapsed_time }}
+                        <!-- {{ board.created_at|date:"Y/m/d H:i" }} -->
+                    </td>
                     <!-- <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td> -->
                 </tr>
             {% empty %}
