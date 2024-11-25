@@ -50,8 +50,13 @@
             {% for board in boards %}
             <tr>
                 <td scope="col">
-                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
-                    {{ board.user }}</td>
+                    {% if board.user.profile.avatar %}
+                    <img src="{{ board.user.profile.avatar.url }}" class="avatar">
+                    {% else %}
+                    <img src="/static/images/blank_avatar.png" class="avatar">
+                    {% endif %}
+                    {{ board.user }}
+                </td>
                 <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
                 <td scope="col">
                     <p><img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28"></p>
