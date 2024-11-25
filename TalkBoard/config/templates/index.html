@@ -6,6 +6,12 @@
 
 {% block content %}
 <body class="dark">
+    <div class="loading-screen">
+        <div class="logo-container">
+            <img src="static/images/icon_andicon.png" alt="サイトロゴ" class="logo">
+        </div>
+    </div>
+
     <section>
     <h2>グローバルの投稿</h2>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
@@ -108,6 +114,7 @@
     {% endif %} 
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
+    <script src="{% static 'js/welcome_anime.js' %}"></script>
 </body>
 
 {% endblock %}
