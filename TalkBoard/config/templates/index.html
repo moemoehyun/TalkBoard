@@ -6,7 +6,7 @@
 
 {% block content %}
 <div id="content">
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}">
     <!-- <div class="loading-screen">
         <div class="logo-container">
             <img src="static/images/icon_andicon.png" alt="サイトロゴ" class="logo">

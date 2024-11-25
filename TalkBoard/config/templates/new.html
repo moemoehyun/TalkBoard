@@ -4,7 +4,7 @@
 {% block title %}新規投稿{% endblock %}
 
 {% block content %}
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}"></body>
     <section>
         <h2>■新規投稿画面</h2>
         <form action="{% url 'app:create' %}" method="post" enctype="multipart/form-data" class="mt-4">

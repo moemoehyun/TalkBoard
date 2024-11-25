@@ -9,7 +9,7 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}"></body>
     <header>この設定は端末のキャッシュを利用して反映されます</header>
         <form action="{% url 'app:index' %}" method="post">
         {% csrf_token %}

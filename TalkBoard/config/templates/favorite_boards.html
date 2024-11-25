@@ -5,7 +5,7 @@
 {% block title %}全ての投稿一覧{% endblock %}
 
 {% block content %}
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}"></body>
     <section>
     <h2>ブックマーク</h2>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">

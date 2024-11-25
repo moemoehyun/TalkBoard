@@ -4,7 +4,7 @@
 {% block title %}お問い合わせ完了{% endblock %}
 
 {% block content %}
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}"></body>
 <section class="message">
     <form action="{% url 'app:index' %}" method="post">
         {% csrf_token %}

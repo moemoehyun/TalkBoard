@@ -5,7 +5,7 @@
 
 {% block content %}
 <div id="content">
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}">
     <div id="imageModal" class="modal" style="display:none;">
         <span class="close">&times;</span>
         <img class="modal-content" id="modalImage">

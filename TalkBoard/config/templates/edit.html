@@ -4,7 +4,7 @@
 {% block title %}{ board.title }の編集画面{% endblock %}
 
 {% block content %}
-<body class="dark">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}"></body>
     <section>
         <h2>「{ board.title }」の編集</h2>
         <form action="{% url 'app:update' pk=board.id %}" method="post">
