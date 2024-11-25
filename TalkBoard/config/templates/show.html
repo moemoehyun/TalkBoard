@@ -24,9 +24,16 @@
             <source src="{{ board.video.url }}" type="video/mp4">
     </video>
 {% endif %}
+        <p>
+            {% if board.user.profile.avatar %}
+            <img src="{{ board.user.profile.avatar.url }}" class="avatar">
+            {% else %}
+            <img src="/static/images/blank_avatar.png" class="avatar">
+            {% endif %}
+            {{ board.user }}
+        </p>
         <h2>{{ board.title }}</h2>
         <h4>{{ board.content|linebreaks }}</h4>
-        <p>{{ board.user }}さんの投稿</p>
         <p>
             作成：{{ board.created_at|date:"Y/m/d H:i" }}</br>
             更新：{{ board.updated_at|date:"Y/m/d H:i" }}</br>
@@ -54,7 +61,7 @@
     </section>
 
     <section class="mt-3">
-        <h3>■コメントを追加する</h3>
+        <h3>コメント</h3>
         <form action="{% url 'app:comment_create' pk=board.id %}" method="post">
             {% csrf_token %}
             <div class="form-group mb-3">
@@ -65,26 +72,31 @@
     </section>
 
     <section>
-        <h3>■コメント一覧</h3>
         <ul class="list-unstyled">
             {% for comment in comments %}
                 <li class="mb-3">
                     <div class="card">
                         <div class="card-header bg-light">
-                            <strong>
-                                {% if request.user == comment.user %}
+                                <!-- {% if request.user == comment.user %}
                                 ◆You◆
-                                {% endif %}
-                                {{ comment.user.username }}</strong>さん　- {{ comment.created_at|date:"Y/m/d H:i"}}
+                                {% endif %} -->
+                                {% if board.user.profile.avatar %}
+                                    <img src="{{ comment.user.profile.avatar.url }}" class="avatar">
+                                    {% else %}
+                                    <img src="/static/images/blank_avatar.png" class="avatar">
+                                    {% endif %}
+                                {{ comment.user.username }} - {{ comment.created_at|date:"Y/m/d H:i"}}
                         </div>
                         <div class="card-body">
                         <p class="card-text">{{ comment.content }}</p>
                         </div>
                         <div class="card-footer">
                             {% if request.user == comment.user %}
-                                <form action="{% url 'app:comment_delete' board.pk comment.pk %}" method="post">
+                                <form action="{% url 'app:comment_delete' board.pk comment.pk %}" method="post" onsubmit="return confirm('本当に削除しますか？');">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger">削除する</button>
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="bi bi-trash"></i> 
+                                    </button>
                                 </form>
                             {% endif %}
                         </div>
