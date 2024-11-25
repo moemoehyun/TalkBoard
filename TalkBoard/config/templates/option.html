@@ -13,7 +13,8 @@
     <header>この設定は端末のキャッシュを利用して反映されます</header>
         <form action="{% url 'app:index' %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">戻る</button>
+        <a href="javascript:history.back();" class="btn btn-outline-primary">
+          <i class="bi bi-chevron-left"></i>戻る</a>
     </form>
   <main>
     <h2>設定</h2>

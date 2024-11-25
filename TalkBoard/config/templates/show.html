@@ -4,16 +4,16 @@
 {% block title %}{{ board.title }}の詳細画面{% endblock %}
 
 {% block content %}
+<div id="content">
 <body class="dark">
     <div id="imageModal" class="modal" style="display:none;">
         <span class="close">&times;</span>
         <img class="modal-content" id="modalImage">
     </div>
+
+    <a href="{% url 'app:index' %}" class="btn btn-outline-primary">
+        <i class="bi bi-chevron-left"></i>戻る</a>
     <section>
-        <form action="{% url 'app:index' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">戻る</button>
-        </form>
         {% if board.image %}
         <div class="image-container">
                 <img src="{{ board.image.url }}" alt="{{ board.title }}" class="post-image">
@@ -21,7 +21,7 @@
         {% endif %}
         {% if board.video %}
             <video width="320" height="240" controls>
-            <source src="{{ board.video.url }}" type="video/mp4">
+            <source src="{{ board.video.url }}" type="video/mp4" class="post-image">
     </video>
 {% endif %}
         <p>
@@ -109,5 +109,7 @@
     </section>
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/image_modal.js' %}"></script>
+    <script src="{% static 'js/page_anime.js' %}"></script>
 </body>
+</div>
 {% endblock %}    

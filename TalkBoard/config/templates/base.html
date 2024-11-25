@@ -19,7 +19,9 @@
     <header class="bg-success">
         <div class="container">
             <div class="pt-3 pb-1 mb-2 text-white d-flex justify-content-between flex-wrap">
-            <img src="{% static 'images/icon_andicon.png' %}" alt="アイコン" width="220" class="me-4">
+                <div class="logo-screen">
+                    <img src="{% static 'images/icon_andicon.png' %}" alt="Logo" width="180" class="logo" id="logo">
+                  </div>
             <!-- <h1 class="display-4">TalkBoard</h1> -->
             {% if user.is_authenticated %}
             <div>
@@ -73,4 +75,5 @@
         </div>
     {% endif %}
 </body>
+<script src="{% static 'js/welcome_anime.js' %}"></script>
 </html>

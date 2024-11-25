@@ -47,6 +47,7 @@ h2{
 }
 
 header {
+    background: #bbeef0;
     display: flex;
     align-items: center; /* 子要素を中央揃え */
     justify-content: space-between; /* 必要に応じて水平配置 */
@@ -106,6 +107,10 @@ main {
 /* ダークモードのスタイル */
 .dark {
     background-color: #222222;
+    color: rgb(226, 226, 226);
+}
+
+.dark a.btn.btn-outline-primary{
     color: rgb(226, 226, 226);
 }
 
@@ -192,4 +197,28 @@ button.btn.btn-outline-primary {
     font-weight: bold;
     cursor: pointer;
     text-shadow: 0 0 10px black;
+}
+
+video{
+    margin: 0px 0px;
+}
+
+
+/* ページスライド */
+/* 初期スタイル */
+#content {
+    position: relative;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* スライドアウト */
+.slide-out {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+/* スライドイン */
+.slide-in {
+    transform: translateX(0);
+    opacity: 1;
 }
