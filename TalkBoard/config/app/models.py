@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/blank_avatar.png')  # デフォルト画像を設定
-    bio = models.TextField(max_length=500, blank=True)  # 自己紹介文
+    # bio = models.TextField(max_length=500, blank=True)
 
     def __str__(self):
         return self.user.username

@@ -14,7 +14,7 @@ from .models import Profile
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio']
+        fields = ['avatar']
 
 class BoardForm(forms.ModelForm):
     title = forms.CharField(
