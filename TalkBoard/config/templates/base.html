@@ -27,7 +27,7 @@
             <div>
                 <p class="text-light">
                     <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
-                    <a class="white" href="{% url 'app:profile' %}">「{{ user.username }}」でログイン中</a></p>
+                    <a class="white" href="{% url 'app:profile' request.user.id %}">「{{ user.username }}」でログイン中</a></p>
             </div>
             <div>
                 <form action="{% url 'logout' %}" method="post" style="display: inline;">

@@ -11,11 +11,10 @@ from .models import Profile
 #         model = Board
 #         fields = ["title", "content"]
 
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['avatar']
+        fields = ['avatar', 'bio']
 
 class BoardForm(forms.ModelForm):
     title = forms.CharField(

@@ -44,14 +44,16 @@ def create_profile(sender, instance, created, **kwargs):
 def save_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+@login_required
 def edit_profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+    profile = request.user.profile  # ログイン中のユーザーのプロフィールを取得
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('app:profile')  # 適切なリダイレクト先に変更
+            return redirect('app:profile', user_id=request.user.id)
     else:
-        form = ProfileForm(instance=request.user.profile)
+        form = ProfileForm(instance=profile)
     return render(request, 'accounts/edit_profile.html', {'form': form})
 
 #ログアウト
@@ -110,10 +112,15 @@ def signup(request):
     return render(request, "registration/signup.html", {"form": form})
 
 #プロフィールページのビュー
+# @login_required
+# def profile(request):
+#     user = request.user
+#     return render(request, "accounts/profile.html", {"user": user})
 @login_required
-def profile(request):
-    user = request.user
-    return render(request, "accounts/profile.html", {"user": user})
+def profile(request, user_id):
+    # 特定のユーザー情報を取得
+    profile_user = get_object_or_404(User, id=user_id)
+    return render(request, "accounts/profile.html", {"profile_user": profile_user, "logged_in_user": request.user})
 
 def activate(request, uidb64, token):
     try:

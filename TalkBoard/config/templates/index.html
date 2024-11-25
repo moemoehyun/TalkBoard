@@ -57,11 +57,13 @@
             {% for board in boards %}
             <tr>
                 <td scope="col">
+                    <a href="{% url 'app:profile' board.user.id %}">
                     {% if board.user.profile.avatar %}
                     <img src="{{ board.user.profile.avatar.url }}" class="avatar">
                     {% else %}
                     <img src="/static/images/blank_avatar.png" class="avatar">
                     {% endif %}
+                </a>
                     {{ board.user }}
                 </td>
                 <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>

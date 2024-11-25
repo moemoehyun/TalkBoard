@@ -8,14 +8,25 @@
 <section class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="large_avatar">
-            <!-- <img src="{{ user.profile.avatar.url }}" alt="User Avatar"> -->
-            <p><h2>{{ user.username }}</h2></p>
-            {% if user == request.user %}
-                <p>↓これより下の情報は他人には表示されません</p>
-                <p>メールアドレス：{{ user.email }}</p>
-                <a href="{% url 'app:edit_profile' %}" class="btn btn-primary">プロフィール編集</a>
+            <img src="{{ profile_user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="large_avatar">
+            <p><h2>{{ profile_user.username }}</h2></p>
+
+            <p>{{ profile_user.profile.bio|default:"自己紹介文はまだありません。" }}</p>
+
+            {% if profile_user == logged_in_user %}
+            <div class="card">
+                <div class="card-header bg-light">
+                    <p>↓これより下の情報は他人には表示されません</p>
+                </div>
+                <div class="card-body">
+                <p class="card-text"><p>メールアドレス：{{ logged_in_user.email }}</p></p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'app:edit_profile' %}" class="btn btn-primary">プロフィール編集</a>
+                </div>
+            </div>
             {% endif %}
+
         </div>
     </div>
     <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>
