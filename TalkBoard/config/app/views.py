@@ -29,6 +29,7 @@ from django.dispatch import receiver
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.db.models import Value, BooleanField
+from django.db.models import Count, Q
 
 # Create your views here.
 for user in User.objects.all():
@@ -215,7 +216,16 @@ def index(request):
 @login_required
 def my_boards(request):
     user = request.user
-    boards = user.boards.all()
+
+    # 自分の投稿に、お気に入りの有無とコメント数を含めて取得
+    boards = (
+        user.boards.annotate(
+            is_favorite=Count("favorite", filter=Q(favorite__user=user)),
+            comment_count=Count("comments"),
+        )
+        .order_by("-updated_at")
+    )
+
     return render(request, "my_boards.html", {"boards": boards})
 
 @login_required
