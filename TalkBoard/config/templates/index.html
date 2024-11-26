@@ -30,31 +30,14 @@
         <button type="submit" class="btn btn-light">🔍</button>
         </div>
     </form>
-    <table class="table">
-        <colgroup>
-            <col style="width: 10%;">
-            <col style="width: 58%;">
-            <col style="width: 7%;">
-            <col style="width: 8%;">
-            <col style="width: 17%;">
-            <!-- <col style="width: 15%;"> -->
-        </colgroup>
-        <!-- <thead>
-            <tr>
-                <th scope="col">投稿者</th>
-                <th scope="col">タイトル</th>
-            <th scope="col">コメント</th>
-            <th scope="col">マーク</th>
-                <th scope="col">
-                    投稿
-                <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
-                </a>
-                </th>
-            </tr>
-        </thead> -->
-        <tbody>
+
+
+    <section>
+        <ul class="list-unstyled">
             {% for board in boards %}
+            <li class="mb-3">
+                <div class="card">
+                    <div class="card-header bg-light">
             <tr>
                 <td scope="col">
                     <a href="{% url 'app:profile' board.user.id %}">
@@ -64,44 +47,58 @@
                     <img src="/static/images/blank_avatar.png" class="avatar">
                     {% endif %}
                 </a>
-                    {{ board.user }}
+                    <a>{{ board.user }}<a>
+                    <a>{{ board.created_at|elapsed_time }}</a>
                 </td>
-                <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a>
-                    {% if board.cropped_image_url %}
-                    <img src="{{ board.cropped_image_url }}" alt="" class="mini-icon">
-                    {% else %}
-                    画像なし
-                    {% endif %}
-                </td>
-                <td scope="col">
-                    <p><img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28"></p>
-                    <p>{{ board.comment_count }}</p>
-                </td>
-                <td>
-                    {% if user.is_authenticated %}
-                        {% if board.is_favorite %}
-                            <form action="{% url 'app:remove_favorite' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="board" value="{{ board.id }}">
-                                <button type="submit" class="btn btn-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
-                            </form>
-                        {% else %}
-                            <form action="{% url 'app:add_favorite' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="board" value="{{ board.id }}">
-                                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
-                            </form>
-                        {% endif %}
-                    {% endif %}
-                </td>
-                    <td scope="col">{{ board.created_at|elapsed_time }}
-                    </td>
-                </tr>
+                        <div class="card-body">
+                        <p class="card-text">
+                                <p>
+                                    <a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a>
+                                </p>
+                                <p>
+                                    {% if board.cropped_image_url %}
+                                    <div class="index_image-container">
+                                        <img src="{{ board.cropped_image_url }}" alt="読み込みエラー">
+                                    </div>
+                                    <!-- <img src="{{ board.cropped_image_url }}" alt="" class="mini-icon"> -->
+                                    {% else %}
+                                    <!-- 画像なし -->
+                                    {% endif %}
+                                </p>
+                        </p>
+                        </div>
+                        <div class="card-footer">
+                            <img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28">
+                            {{ board.comment_count }}
+                            
+                            {% if user.is_authenticated %}
+                                {% if board.is_favorite %}
+                                    <form action="{% url 'app:remove_favorite' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="board" value="{{ board.id }}">
+                                        <button type="submit" class="btn btn-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'app:add_favorite' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="board" value="{{ board.id }}">
+                                        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
             {% empty %}
-                <p>該当するスレッドが見つかりませんでした。</p>
+                <li class="text-muted">コメントはまだありません。</li>
             {% endfor %}
-        </tbody>
-        </table>
+        </ul>
+    </section>
+
+
+
+
+
         <a href="{% url 'app:new' %}" class="btn btn-primary">＋新規投稿</a>
         <a href="{% url 'app:my_boards' %}" class="btn btn-primary">自分の投稿</a>
         <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">ブックマーク</a>

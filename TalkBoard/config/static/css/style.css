@@ -27,6 +27,10 @@ body {
     /* text-decoration: none; 下線を消す場合 */
 }
 
+.black_nonline {
+    color: #363636;
+    text-decoration: none; /* 下線を消す場合 */
+}
 /* .bg-secondary{
     Background: #d4ecff;
 } */
@@ -38,12 +42,20 @@ body {
     text-align: center;
     width: 100%;
 } */
+.left{
+    text-align: left; 
+}
+
 h1{
     margin: 10px 0px;
 }
 
 h2{
     margin: 10px 0px;
+}
+
+p{
+    margin: 4px 0px;
 }
 
 header {
@@ -125,7 +137,7 @@ main {
 
 /* PC用とスマホ用のレスポンシブスタイル */
 .mobile-view {
-    font-size: 11px;
+    font-size: 16px;
 }
 
 .desktop-view {
@@ -230,4 +242,31 @@ video{
     object-fit: cover; /* 正方形内に収める */
     border-radius: 5px; /* 角丸をつけたい場合 */
     border: 1px solid #ccc;
+}
+
+
+.card-body{
+    padding: 0px 14px
+}
+
+
+.index_image-container {
+    width: 100%;
+    height: 30vh;
+    overflow: hidden; /* コンテナを超える部分を隠す */
+    position: relative;
+}
+
+.index_image-container img {
+    width: 100%; /* 画像をコンテナの横幅に合わせる */
+    height: auto; /* アスペクト比を保持 */
+    position: absolute; /* 中央寄せするための設定 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* コンテナの中央に画像を配置 */
+}
+
+
+form {
+    display: inline;
 }

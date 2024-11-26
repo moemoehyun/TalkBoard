@@ -14,6 +14,15 @@
     <a href="{% url 'app:index' %}" class="btn btn-outline-primary">
         <i class="bi bi-chevron-left"></i>戻る</a>
     <section>
+        <p>
+            {% if board.user.profile.avatar %}
+            <img src="{{ board.user.profile.avatar.url }}" class="avatar">
+            {% else %}
+            <img src="/static/images/blank_avatar.png" class="avatar">
+            {% endif %}
+            {{ board.user }}
+        </p>
+
         {% if board.image %}
         <div class="image-container">
                 <img src="{{ board.image.url }}" alt="{{ board.title }}" class="post-image">
@@ -24,16 +33,8 @@
             <source src="{{ board.video.url }}" type="video/mp4" class="post-image">
     </video>
 {% endif %}
-        <p>
-            {% if board.user.profile.avatar %}
-            <img src="{{ board.user.profile.avatar.url }}" class="avatar">
-            {% else %}
-            <img src="/static/images/blank_avatar.png" class="avatar">
-            {% endif %}
-            {{ board.user }}
-        </p>
         <h2>{{ board.title }}</h2>
-        <h4>{{ board.content|linebreaks }}</h4>
+        <p>{{ board.content|linebreaks }}</p>
         <p>
             作成：{{ board.created_at|date:"Y/m/d H:i" }}</br>
             更新：{{ board.updated_at|date:"Y/m/d H:i" }}</br>
