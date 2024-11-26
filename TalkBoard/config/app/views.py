@@ -212,34 +212,39 @@ def serve_cropped_image(request, board_id):
 
     if board.image:
         try:
-            # 画像のパスを取得
-            image_path = os.path.join(settings.MEDIA_ROOT, board.image.name)
+            # S3上の画像URLを取得
+            image_url = board.image.url  # MEDIA_URL + ファイル名で構築されるURL
 
-            # 画像を開いてトリミング処理を実行
-            with Image.open(image_path) as img:
-                width, height = img.size
-                min_dimension = min(width, height)
-                left = (width - min_dimension) / 2
-                top = (height - min_dimension) / 2
-                right = (width + min_dimension) / 2
-                bottom = (height + min_dimension) / 2
-                cropped_img = img.crop((left, top, right, bottom))
+            # S3から画像を取得
+            response = requests.get(image_url)
+            response.raise_for_status()
 
-                # 出力用のバッファを準備
-                buffer = BytesIO()
-                cropped_img.save(buffer, format="PNG")  # PNG形式で保存
-                buffer.seek(0)
+            # 画像を開いてトリミング処理
+            img = Image.open(BytesIO(response.content))
+            width, height = img.size
+            min_dimension = min(width, height)
+            left = (width - min_dimension) / 2
+            top = (height - min_dimension) / 2
+            right = (width + min_dimension) / 2
+            bottom = (height + min_dimension) / 2
+            cropped_img = img.crop((left, top, right, bottom))
 
-                # HTTPレスポンスとして画像を返す
-                return HttpResponse(buffer, content_type="image/png")
+            # 出力用のバッファを準備
+            buffer = BytesIO()
+            cropped_img.save(buffer, format="JPEG")  # JPEG形式で保存
+            buffer.seek(0)
+
+            # HTTPレスポンスとして画像を返す
+            return HttpResponse(buffer, content_type="image/jpeg")
+        except requests.exceptions.RequestException as e:
+            # S3からの取得エラーをログに記録
+            print(f"Error fetching image from S3 for board {board_id}: {e}")
+            return HttpResponse(status=500)
         except Exception as e:
+            # トリミングエラーをログに記録
             print(f"Error processing image for board {board_id}: {e}")
             return HttpResponse(status=500)
 
-    # 画像が存在しない場合
-    return HttpResponse(status=404)
-
-    # 画像が存在しない場合またはエラーが発生した場合
     return HttpResponse(status=404)
 # def serve_cropped_image(request, board_id):
 #     board = get_object_or_404(Board, id=board_id)
