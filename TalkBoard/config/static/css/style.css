@@ -222,3 +222,12 @@ video{
     transform: translateX(0);
     opacity: 1;
 }
+
+
+.mini-icon {
+    width: 50px; /* 表示するアイコンのサイズ */
+    height: 50px;
+    object-fit: cover; /* 正方形内に収める */
+    border-radius: 5px; /* 角丸をつけたい場合 */
+    border: 1px solid #ccc;
+}

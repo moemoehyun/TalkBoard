@@ -19,9 +19,10 @@ urlpatterns = [
     path('activation_failed/', views.activation_failed, name='activation_failed'),
     re_path(r'^favicon\.ico$', serve, {'path': 'favicon.ico', 'document_root': settings.STATIC_ROOT}),
     path('resend_email/<int:user_id>/', views.resend_email, name='resend_email'),
-    # path("admin/", admin.site.urls),
-    # path("", include("app.urls")),
+
+
     path("", views.index, name = "index"),
+    path('cropped-image/<int:board_id>/', views.serve_cropped_image, name='cropped_image'),
     path("new/", login_required(views.new), name = "new"),
     path("create/", login_required(views.create), name = "create"),
     path("show/<int:pk>/", login_required(views.show), name = "show"),

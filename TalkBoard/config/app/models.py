@@ -15,7 +15,6 @@ class Profile(models.Model):
 class Board(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    # image = models.FileField(upload_to='images/', blank=True, null=True)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
     video = models.FileField(upload_to='videos/', blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="boards", null=True)
