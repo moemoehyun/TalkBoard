@@ -33,6 +33,7 @@ from django.db.models import Count, Q
 from PIL import Image
 from io import BytesIO
 from django.urls import reverse
+import requests
 
 
 # Create your views here.
@@ -205,15 +206,20 @@ def user_owns_board(view_func):
             return redirect("app:index")
     return wrapper
 
-
 def serve_cropped_image(request, board_id):
     board = get_object_or_404(Board, id=board_id)
 
     if board.image:
         try:
-            # 元画像を開く
-            with Image.open(board.image.path) as img:
-                # 正方形にトリミング（中央部分）
+            # 画像をストレージから取得
+            if hasattr(board.image, 'url'):
+                response = requests.get(board.image.url)
+                response.raise_for_status()  # エラーチェック
+
+                # 画像を開く
+                img = Image.open(BytesIO(response.content))
+
+                # トリミング処理（中央部分）
                 width, height = img.size
                 min_dimension = min(width, height)
                 left = (width - min_dimension) / 2
@@ -222,18 +228,48 @@ def serve_cropped_image(request, board_id):
                 bottom = (height + min_dimension) / 2
                 cropped_img = img.crop((left, top, right, bottom))
 
-                # 出力用バッファを準備
+                # 出力用のバッファを準備
                 buffer = BytesIO()
-                cropped_img.save(buffer, format="PNG", quality=40)  # JPEGで保存
+                cropped_img.save(buffer, format="JPEG")
                 buffer.seek(0)
 
-                # HTTPレスポンスで画像を返す
+                # HTTPレスポンスとして画像を返す
                 return HttpResponse(buffer, content_type="image/jpeg")
-        except Exception as e:
-            print(f"Error processing image for board {board_id}: {e}")  # デバッグ用
-            return HttpResponse(status=500)
 
+        except Exception as e:
+            # ログ出力 (デバッグ用)
+            print(f"Error processing image for board {board_id}: {e}")
+
+    # 画像が存在しない場合またはエラーが発生した場合
     return HttpResponse(status=404)
+# def serve_cropped_image(request, board_id):
+#     board = get_object_or_404(Board, id=board_id)
+
+#     if board.image:
+#         try:
+#             # 元画像を開く
+#             with Image.open(board.image.path) as img:
+#                 # 正方形にトリミング（中央部分）
+#                 width, height = img.size
+#                 min_dimension = min(width, height)
+#                 left = (width - min_dimension) / 2
+#                 top = (height - min_dimension) / 2
+#                 right = (width + min_dimension) / 2
+#                 bottom = (height + min_dimension) / 2
+#                 cropped_img = img.crop((left, top, right, bottom))
+
+#                 # 出力用バッファを準備
+#                 buffer = BytesIO()
+#                 cropped_img.save(buffer, format="PNG", quality=40)  # JPEGで保存
+#                 buffer.seek(0)
+
+#                 # HTTPレスポンスで画像を返す
+#                 return HttpResponse(buffer, content_type="image/jpeg")
+#         except Exception as e:
+#             print(f"Error processing image for board {board_id}: {e}")  # デバッグ用
+#             return HttpResponse(status=500)
+
+#     return HttpResponse(status=404)
 
 
 def index(request):
