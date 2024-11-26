@@ -207,19 +207,16 @@ def user_owns_board(view_func):
     return wrapper
 
 def serve_cropped_image(request, board_id):
+    # Boardモデルを取得
     board = get_object_or_404(Board, id=board_id)
 
     if board.image:
         try:
-            # 画像をストレージから取得
-            if hasattr(board.image, 'url'):
-                response = requests.get(board.image.url)
-                response.raise_for_status()  # エラーチェック
+            # 画像のパスを取得
+            image_path = os.path.join(settings.MEDIA_ROOT, board.image.name)
 
-                # 画像を開く
-                img = Image.open(BytesIO(response.content))
-
-                # トリミング処理（中央部分）
+            # 画像を開いてトリミング処理を実行
+            with Image.open(image_path) as img:
                 width, height = img.size
                 min_dimension = min(width, height)
                 left = (width - min_dimension) / 2
@@ -230,15 +227,17 @@ def serve_cropped_image(request, board_id):
 
                 # 出力用のバッファを準備
                 buffer = BytesIO()
-                cropped_img.save(buffer, format="JPEG")
+                cropped_img.save(buffer, format="PNG")  # PNG形式で保存
                 buffer.seek(0)
 
                 # HTTPレスポンスとして画像を返す
-                return HttpResponse(buffer, content_type="image/jpeg")
-
+                return HttpResponse(buffer, content_type="image/png")
         except Exception as e:
-            # ログ出力 (デバッグ用)
             print(f"Error processing image for board {board_id}: {e}")
+            return HttpResponse(status=500)
+
+    # 画像が存在しない場合
+    return HttpResponse(status=404)
 
     # 画像が存在しない場合またはエラーが発生した場合
     return HttpResponse(status=404)
