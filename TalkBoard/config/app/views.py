@@ -206,74 +206,50 @@ def user_owns_board(view_func):
             return redirect("app:index")
     return wrapper
 
-def serve_cropped_image(request, board_id):
-    # Boardモデルを取得
-    board = get_object_or_404(Board, id=board_id)
-
-    if board.image:
-        try:
-            # S3上の画像URLを取得
-            image_url = board.image.url  # MEDIA_URL + ファイル名で構築されるURL
-
-            # S3から画像を取得
-            response = requests.get(image_url)
-            response.raise_for_status()
-
-            # 画像を開いてトリミング処理
-            img = Image.open(BytesIO(response.content))
-            width, height = img.size
-            min_dimension = min(width, height)
-            left = (width - min_dimension) / 2
-            top = (height - min_dimension) / 2
-            right = (width + min_dimension) / 2
-            bottom = (height + min_dimension) / 2
-            cropped_img = img.crop((left, top, right, bottom))
-
-            # 出力用のバッファを準備
-            buffer = BytesIO()
-            cropped_img.save(buffer, format="JPEG")  # JPEG形式で保存
-            buffer.seek(0)
-
-            # HTTPレスポンスとして画像を返す
-            return HttpResponse(buffer, content_type="image/jpeg")
-        except requests.exceptions.RequestException as e:
-            # S3からの取得エラーをログに記録
-            print(f"Error fetching image from S3 for board {board_id}: {e}")
-            return HttpResponse(status=500)
-        except Exception as e:
-            # トリミングエラーをログに記録
-            print(f"Error processing image for board {board_id}: {e}")
-            return HttpResponse(status=500)
-
-    return HttpResponse(status=404)
 # def serve_cropped_image(request, board_id):
+#     # Boardモデルを取得
 #     board = get_object_or_404(Board, id=board_id)
 
 #     if board.image:
 #         try:
-#             # 元画像を開く
-#             with Image.open(board.image.path) as img:
-#                 # 正方形にトリミング（中央部分）
-#                 width, height = img.size
-#                 min_dimension = min(width, height)
-#                 left = (width - min_dimension) / 2
-#                 top = (height - min_dimension) / 2
-#                 right = (width + min_dimension) / 2
-#                 bottom = (height + min_dimension) / 2
-#                 cropped_img = img.crop((left, top, right, bottom))
+#             # S3上の画像URLを取得
+#             image_url = board.image.url  # MEDIA_URL + ファイル名で構築されるURL
 
-#                 # 出力用バッファを準備
-#                 buffer = BytesIO()
-#                 cropped_img.save(buffer, format="PNG", quality=40)  # JPEGで保存
-#                 buffer.seek(0)
+#             # S3から画像を取得
+#             response = requests.get(image_url)
+#             response.raise_for_status()
 
-#                 # HTTPレスポンスで画像を返す
-#                 return HttpResponse(buffer, content_type="image/jpeg")
+#             # 画像を開いてトリミング処理
+#             print(f"Fetching image from: {image_url}")
+#             print(f"Response status: {response.status_code}, Content: {response.content[:100]}")
+
+#             img = Image.open(BytesIO(response.content))
+#             width, height = img.size
+#             min_dimension = min(width, height)
+#             left = (width - min_dimension) / 2
+#             top = (height - min_dimension) / 2
+#             right = (width + min_dimension) / 2
+#             bottom = (height + min_dimension) / 2
+#             cropped_img = img.crop((left, top, right, bottom))
+
+#             # 出力用のバッファを準備
+#             buffer = BytesIO()
+#             cropped_img.save(buffer, format="PNG")  # JPEG形式で保存
+#             buffer.seek(0)
+
+#             # HTTPレスポンスとして画像を返す
+#             return HttpResponse(buffer, content_type="image/jpeg")
+#         except requests.exceptions.RequestException as e:
+#             # S3からの取得エラーをログに記録
+#             print(f"Error fetching image from S3 for board {board_id}: {e}")
+#             return HttpResponse(status=500)
 #         except Exception as e:
-#             print(f"Error processing image for board {board_id}: {e}")  # デバッグ用
+#             # トリミングエラーをログに記録
+#             print(f"Error processing image for board {board_id}: {e}")
 #             return HttpResponse(status=500)
 
 #     return HttpResponse(status=404)
+
 
 
 def index(request):
@@ -295,13 +271,6 @@ def index(request):
     paginator = Paginator(boards_query, 10)
     page_number = request.GET.get("page")
     boards = paginator.get_page(page_number)
-
-    for board in boards:
-        if board.image:
-            board.cropped_image_url = reverse("app:cropped_image", args=[board.id])
-            print(f"Cropped image URL for board {board.id}: {board.cropped_image_url}")  # デバッグ
-        else:
-            board.cropped_image_url = None
 
     return render(request, "index.html", {"boards": boards})
     # user = request.user

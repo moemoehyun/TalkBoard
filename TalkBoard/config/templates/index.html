@@ -56,13 +56,12 @@
                                     <a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a>
                                 </p>
                                 <p>
-                                    {% if board.cropped_image_url %}
-                                    <div class="index_image-container">
-                                        <img src="{{ board.cropped_image_url }}" alt="読み込みエラー">
-                                    </div>
-                                    <!-- <img src="{{ board.cropped_image_url }}" alt="" class="mini-icon"> -->
+                                    {% if board.image %}
+                                        <div class="index_image-container">
+                                            <img src="{{ board.image.url }}" alt="{{ board.title }}">
+                                        </div>
                                     {% else %}
-                                    <!-- 画像なし -->
+                                        <p>画像なし</p>
                                     {% endif %}
                                 </p>
                         </p>
