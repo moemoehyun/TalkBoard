@@ -65,6 +65,9 @@ def logout_view(request):
     logout(request)
     return redirect("app:index")
 
+# @login_required
+# def login(request):
+
 #サインアップページのビュー
 # def signup(request):
 #     if request.method == "POST":
@@ -121,9 +124,12 @@ def signup(request):
 #     user = request.user
 #     return render(request, "accounts/profile.html", {"user": user})
 @login_required
-def profile(request, user_id):
+def profile(request, user_id=None):
     # 特定のユーザー情報を取得
-    profile_user = get_object_or_404(User, id=user_id)
+    if user_id == None:
+        profile_user = request.user
+    else:
+        profile_user = get_object_or_404(User, id=user_id)
     return render(request, "accounts/profile.html", {"profile_user": profile_user, "logged_in_user": request.user})
 
 def activate(request, uidb64, token):

@@ -252,7 +252,7 @@ video{
 
 .index_image-container {
     width: 100%;
-    height: 30vh;
+    height: 26vh;
     overflow: hidden; /* コンテナを超える部分を隠す */
     position: relative;
 }

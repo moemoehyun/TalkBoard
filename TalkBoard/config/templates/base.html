@@ -27,7 +27,7 @@
             <div>
                 <p class="text-light">
                     <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
-                    <a class="white" href="{% url 'app:profile' request.user.id %}">「{{ user.username }}」でログイン中</a></p>
+                    <a class="white" href="{% url 'app:profile' request.user.id %}">{{ user.username }}</a></p>
             </div>
             <div>
                 <form action="{% url 'logout' %}" method="post" style="display: inline;">
@@ -38,9 +38,11 @@
                 <a href="{% url 'app:option' %}" class="btn btn-light">設定</a>
             </div>
             {% else %}
+            <div>
                 <a href="{% url 'signup' %}" class="btn btn-light">サインアップ</a>
                 <a href="{% url 'login' %}" class="btn btn-light">ログイン</a>
                 <a href="{% url 'app:contact' %}" class="btn btn-light">お問い合わせ</a>
+            </div>
             {% endif %}
             </div>
         </div>
