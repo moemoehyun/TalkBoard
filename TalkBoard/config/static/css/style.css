@@ -274,7 +274,7 @@ form {
 
 .fixed-buttons {
     position: fixed;
-    bottom: 20px; /* 下からの距離 */
+    bottom: 50px; /* 下からの距離 */
     right: 20px; /* 右からの距離 */
     z-index: 1000; /* 他の要素より上に表示 */
     display: flex;
