@@ -34,6 +34,9 @@ from PIL import Image
 from io import BytesIO
 from django.urls import reverse
 import requests
+from django.http import JsonResponse
+
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -250,6 +253,28 @@ def user_owns_board(view_func):
 
 #     return HttpResponse(status=404)
 
+@login_required
+def toggle_favorite(request, board_id):
+    if request.method == "POST":
+        try:
+            board = Board.objects.get(id=board_id)
+        except Board.DoesNotExist:
+            return JsonResponse({"error": "Board not found"}, status=404)
+
+        # Favorite のトグル処理
+        favorite, created = Favorite.objects.get_or_create(user=request.user, board=board)
+        if not created:
+            favorite.delete()
+            is_favorite = False
+        else:
+            is_favorite = True
+
+        # いいね数を取得
+        favorite_count = board.favorite_set.count()
+
+        return JsonResponse({"is_favorite": is_favorite, "favorite_count": favorite_count})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 def index(request):

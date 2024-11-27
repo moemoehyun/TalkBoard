@@ -60,8 +60,6 @@
                                         <div class="index_image-container">
                                             <img src="{{ board.image.url }}" alt="{{ board.title }}">
                                         </div>
-                                    {% else %}
-                                        <p>画像なし</p>
                                     {% endif %}
                                 </p>
                         </p>
@@ -71,19 +69,13 @@
                             {{ board.comment_count }}
                             
                             {% if user.is_authenticated %}
-                                {% if board.is_favorite %}
-                                    <form action="{% url 'app:remove_favorite' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="board" value="{{ board.id }}">
-                                        <button type="submit" class="btn btn-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
-                                    </form>
-                                {% else %}
-                                    <form action="{% url 'app:add_favorite' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="board" value="{{ board.id }}">
-                                        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
-                                    </form>
-                                {% endif %}
+                            <button
+                                type="button" 
+                                class="like-button btn {% if board.is_favorite %}btn-primary{% else %}btn-outline-primary{% endif %}" 
+                                data-board-id="{{ board.id }}">
+                                <i class="bi {% if board.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                <span>{{ board.favorite_set.count }}</span>
+                            </button>
                             {% endif %}
                         </div>
                     </div>
@@ -119,6 +111,7 @@
     <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
     <script src="{% static 'js/welcome_anime.js' %}"></script>
     <script src="{% static 'js/page_anime.js' %}"></script>
+    <script src="{% static 'js/AJAX.js' %}"></script>
 </body>
 </div>
 

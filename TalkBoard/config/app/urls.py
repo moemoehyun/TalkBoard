@@ -14,6 +14,7 @@ from django.conf.urls.static import static
 app_name = 'app'
 urlpatterns = [
     # 他のパス設定...
+    path('favorite-toggle/<int:board_id>/', views.toggle_favorite, name='toggle_favorite'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('email_sent/<int:user_id>/', views.email_sent, name='email_sent'),
     path('activation_failed/', views.activation_failed, name='activation_failed'),

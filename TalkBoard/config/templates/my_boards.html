@@ -5,9 +5,16 @@
 {% block title %}全ての投稿一覧{% endblock %}
 
 {% block content %}
-<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}"></body>
+<div id="content">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark{% endif %}">
+    <!-- <div class="loading-screen">
+        <div class="logo-container">
+            <img src="static/images/icon_andicon.png" alt="サイトロゴ" class="logo">
+        </div>
+    </div> -->
+
     <section>
-    <h2>あなたの投稿</h2>
+    <h2>グローバルの投稿</h2>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
     <div class="col-md-3">
         <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
@@ -23,70 +30,64 @@
         <button type="submit" class="btn btn-light">🔍</button>
         </div>
     </form>
-    <table class="table">
-        <colgroup>
-            <col style="width: 10%;">
-            <col style="width: 58%;">
-            <col style="width: 7%;">
-            <col style="width: 8%;">
-            <col style="width: 17%;">
-            <!-- <col style="width: 15%;"> -->
-        </colgroup>
-        <!-- <thead>
-            <tr>
-                <th scope="col">投稿者</th>
-                <th scope="col">タイトル</th>
-            <th scope="col">コメント</th>
-            <th scope="col">マーク</th>
-                <th scope="col">
-                    投稿
-                <a href="{% url 'app:sort' %}?sort=created_at&direction={{ next_direction|default:'asc' }}">
-                    {% include "direction.html" with sort_filed='created_at' field=sort_by direction=direction %}
-                </a>
-                </th>
-            </tr>
-        </thead> -->
-        <tbody>
+
+
+    <section>
+        <ul class="list-unstyled">
             {% for board in boards %}
+            <li class="mb-3">
+                <div class="card">
+                    <div class="card-header bg-light">
             <tr>
                 <td scope="col">
-                    <img src="{{ user.profile.avatar.url|default:'/static/images/blank_avatar.png' }}" class="avatar">
-                    {{ board.user }}</td>
-                <td scope="col"><a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a></td>
-                <td scope="col">
-                    <p><img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28"></p>
-                    <p>{{ board.comment_count }}</p>
-                </td>
-                <td>
-                    {% if user.is_authenticated %}
-                        {% if board.is_favorite %}
-                            <form action="{% url 'app:remove_favorite' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="board" value="{{ board.id }}">
-                                <button type="submit" class="btn btn-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
-                            </form>
-                        {% else %}
-                            <form action="{% url 'app:add_favorite' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="board" value="{{ board.id }}">
-                                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-clipboard-heart-fill"></i></button>
-                            </form>
-                        {% endif %}
+                    <a href="{% url 'app:profile' board.user.id %}">
+                    {% if board.user.profile.avatar %}
+                    <img src="{{ board.user.profile.avatar.url }}" class="avatar">
+                    {% else %}
+                    <img src="/static/images/blank_avatar.png" class="avatar">
                     {% endif %}
+                </a>
+                    <a>{{ board.user }}<a>
+                    <a>{{ board.created_at|elapsed_time }}</a>
                 </td>
-                    <td scope="col">{{ board.created_at|elapsed_time }}
-                        <!-- {{ board.created_at|date:"Y/m/d H:i" }} -->
-                    </td>
-                    <!-- <td scope="col">{{ board.updated_at|date:"Y/m/d H:i" }}</td> -->
-                </tr>
+                        <div class="card-body">
+                        <p class="card-text">
+                                <p>
+                                    <a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a>
+                                </p>
+                                <p>
+                                    {% if board.image %}
+                                        <div class="index_image-container">
+                                            <img src="{{ board.image.url }}" alt="{{ board.title }}">
+                                        </div>
+                                    {% endif %}
+                                </p>
+                        </p>
+                        </div>
+                        <div class="card-footer">
+                            <img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28">
+                            {{ board.comment_count }}
+                            
+                            {% if user.is_authenticated %}
+                            <button
+                                type="button" 
+                                class="like-button btn {% if board.is_favorite %}btn-primary{% else %}btn-outline-primary{% endif %}" 
+                                data-board-id="{{ board.id }}">
+                                <i class="bi {% if board.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                <span>{{ board.favorite_set.count }}</span>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
             {% empty %}
-                <p>該当するスレッドが見つかりませんでした。</p>
+                <li class="text-muted">コメントはまだありません。</li>
             {% endfor %}
-        </tbody>
-        </table>
-        <a href="{% url 'app:index' %}" class="btn btn-primary">グローバル</a>
-        <a href="{% url 'app:my_boards' %}" class="btn btn-primary">自分の投稿</a>
-        <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">ブックマーク</a>
+        </ul>
+    </section>
+    <a href="{% url 'app:index' %}" class="btn btn-primary">グローバル</a>
+    <a href="{% url 'app:my_boards' %}" class="btn btn-primary">自分の投稿</a>
+    <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">ブックマーク</a>
     </section>
 
     <!-- ぺージネーションのリンク表示 -->
@@ -103,6 +104,10 @@
     {% endif %} 
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
+    <script src="{% static 'js/welcome_anime.js' %}"></script>
+    <script src="{% static 'js/page_anime.js' %}"></script>
+    <script src="{% static 'js/AJAX.js' %}"></script>
 </body>
+</div>
 
 {% endblock %}
