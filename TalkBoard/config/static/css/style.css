@@ -277,11 +277,29 @@ form {
     bottom: 20px; /* 下からの距離 */
     right: 20px; /* 右からの距離 */
     z-index: 1000; /* 他の要素より上に表示 */
+    display: flex;
+    flex-direction: column; /* 縦並びに配置 */
+    gap: 10px; /* ボタン間のスペース */
 }
 
-.fixed-buttons .btn {
-    display: block; /* ボタンを縦並びにする */
-    margin-bottom: 10px; /* ボタン同士の間隔 */
-    width: 150px; /* ボタンの幅を統一 */
-    text-align: center; /* ボタンのテキストを中央揃え */
+.fixed-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; /* ボタンの直径 */
+    height: 50px; /* ボタンの直径 */
+    border-radius: 50%; /* 円形にする */
+    font-size: 20px; /* アイコンや文字のサイズ */
+    text-align: center; /* 中央揃え */
+    text-decoration: none; /* 下線を消す */
+    color: #fff; /* テキストの色 */
+    background-color: #007bff; /* ボタンの背景色 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボタンの影 */
+    border: none; /* ボーダーを消す */
+    transition: background-color 0.3s, transform 0.2s; /* ホバー時のアニメーション */
+}
+
+.fixed-button:hover {
+    background-color: #0056b3; /* ホバー時の背景色 */
+    transform: scale(1.1); /* ホバー時に少し拡大 */
 }
