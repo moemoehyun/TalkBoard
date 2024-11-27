@@ -40,3 +40,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const repostButtons = document.querySelectorAll('.repost-button');
+
+    repostButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const boardId = button.dataset.boardId;
+
+            // 確認ダイアログを表示
+            const confirmRepost = confirm("この投稿をリポストしますか？");
+            if (!confirmRepost) {
+                return; // ユーザーがキャンセルした場合は終了
+            }
+
+            fetch(`/repost-toggle/${boardId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error(data.error);
+                    return;
+                }
+
+                // リポストの状態を更新
+                const repostCountElement = button.querySelector('.repost-count');
+                if (data.is_reposted) {
+                    button.classList.add('reposted');
+                } else {
+                    button.classList.remove('reposted');
+                }
+
+                // カウント部分を更新
+                if (repostCountElement) {
+                    repostCountElement.textContent = data.repost_count;
+                }
+            })
+            .catch(error => console.error('エラー:', error));
+        });
+    });
+});

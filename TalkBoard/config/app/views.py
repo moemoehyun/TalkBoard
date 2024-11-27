@@ -29,16 +29,40 @@ from django.dispatch import receiver
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.db.models import Value, BooleanField
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Exists, OuterRef, Subquery
 from PIL import Image
 from io import BytesIO
 from django.urls import reverse
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from .models import Repost
 
 # Create your views here.
+@login_required
+def repost(request, board_id):
+    try:
+        board = Board.objects.get(id=board_id)
+    except Board.DoesNotExist:
+        return JsonResponse({"error": "Board not found"}, status=404)
+
+    # リポストのトグル処理
+    repost, created = Repost.objects.get_or_create(user=request.user, original_post=board)
+
+    if not created:  # リポストを解除
+        repost.delete()
+        is_reposted = False
+    else:  # 新たにリポスト
+        is_reposted = True
+
+    # リポスト数のカウント
+    repost_count = Repost.objects.filter(original_post=board).count()
+
+    return JsonResponse({
+        "repost_count": repost_count,
+        "is_reposted": is_reposted,
+    })
+
 for user in User.objects.all():
     Profile.objects.get_or_create(user=user)
 
@@ -67,20 +91,6 @@ def edit_profile(request):
 def logout_view(request):
     logout(request)
     return redirect("app:index")
-
-# @login_required
-# def login(request):
-
-#サインアップページのビュー
-# def signup(request):
-#     if request.method == "POST":
-#         form = SignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("app:login")
-#     else:
-#         form = SignUpForm()
-#     return render(request, "registration/signup.html", {"form": form})
 
 def signup(request):
     if request.method == "POST":
@@ -121,29 +131,6 @@ def signup(request):
 
     return render(request, "registration/signup.html", {"form": form})
 
-#プロフィールページのビュー
-# @login_required
-# def profile(request):
-#     user = request.user
-#     return render(request, "accounts/profile.html", {"user": user})
-# @login_required
-# def profile(request, user_id=None):
-#     user = request.user
-
-#     # 自分の投稿に、お気に入りの有無とコメント数を含めて取得
-#     boards = (
-#         user.boards.annotate(
-#             is_favorite=Count("favorite", filter=Q(favorite__user=user)),
-#             comment_count=Count("comments"),
-#         )
-#         .order_by("-updated_at")
-#     )
-#     # 特定のユーザー情報を取得
-#     if user_id == None:
-#         profile_user = profile.user
-#     else:
-#         profile_user = get_object_or_404(User, id=user_id)
-#     return render(request, "accounts/profile.html", {"profile_user": profile_user, "logged_in_user": request.user, "boards": boards})
 @login_required
 def profile(request, user_id=None):
     user = request.user
@@ -186,21 +173,7 @@ def activate(request, uidb64, token):
         return redirect('app:index')  # ログインページにリダイレクト
     else:
         return redirect('app:activation_failed')  # 失敗時のリダイレクト
-# def activate(request, uidb64, token):
-#     try:
-#         uid = urlsafe_base64_encode(force_bytes(user.pk))
-#         user = get_user_model().objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
-#         user = None
 
-#     if user is not None and default_token_generator.check_token(user, token):
-#         user.is_active = True
-#         user.save()
-#         login(request, user)
-#         return redirect('app:login')
-#     else:
-#         return redirect('app:activation_failed')
-    
 def activation_failed(request):
     return render(request, 'activation_failed.html')
     
@@ -310,31 +283,29 @@ def toggle_favorite(request, board_id):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-
+@login_required
 def index(request):
     user = request.user
 
-    if user.is_authenticated:
-        # ログインしている場合、お気に入りのカウントを取得
-        boards_query = Board.objects.annotate(
-            is_favorite=Count("favorite", filter=models.Q(favorite__user=user)),
-            comment_count=Count("comments")
-        ).order_by("-updated_at")
-    else:
-        # ログインしていない場合、お気に入りのカウントはなし
-        boards_query = Board.objects.annotate(
-            is_favorite=Count("favorite", filter=models.Q(favorite__user=None)),
-            comment_count=Count("comments")
-        ).order_by("-updated_at")
+    boards_query = Board.objects.annotate(
+        is_favorite=Count("favorite", filter=Q(favorite__user=user)),
+        comment_count=Count("comments"),
+        repost_count=Count("reposts"),
+        is_reposted=Exists(
+            Repost.objects.filter(user=user, original_post=OuterRef("id"))
+        ),
+        reposted_by=Subquery(
+            Repost.objects.filter(original_post=OuterRef("id"))
+            .order_by("-created_at")  # 最新のリポストユーザーを取得
+            .values("user__username")[:1]
+        ),
+    ).order_by("-is_reposted", "-updated_at")  # リポストを優先表示
 
     paginator = Paginator(boards_query, 10)
     page_number = request.GET.get("page")
     boards = paginator.get_page(page_number)
 
     return render(request, "index.html", {"boards": boards})
-    # user = request.user
-    # boards = Board.objects.annotate(is_favorite=Count("favorite", filter=models.Q(favorite__user=user))).order_by("-updated_at")
-    # return render(request, "index.html", {"boards": boards})
 
 @login_required
 def my_boards(request):
@@ -390,12 +361,19 @@ def show(request, pk):
     board = Board.objects.get(pk=pk)
     comments = Comment.objects.filter(board=pk).order_by("-created_at")
     comment_form = CommentForm()
+    # リポスト済みかを判定
+    is_reposted = Repost.objects.filter(user=request.user, original_post=board).exists()
+    
     
     # 閲覧数を計算・保存
     board.views += 1  # 閲覧数を1増加
     board.save(update_fields=['views'])  # 閲覧数のみを保存
 
-    return render(request, "show.html", {"board": board, "comments": comments, "comment_form": comment_form})
+    return render(request, "show.html", {
+        "board": board, 
+        "comments": comments, 
+        "comment_form": comment_form, 
+        "is_reposted": is_reposted})
 
 @login_required
 @user_owns_board

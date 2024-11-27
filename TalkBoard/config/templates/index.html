@@ -40,6 +40,12 @@
                     <div class="card-header bg-light">
             <tr>
                 <td scope="col">
+                    {% if board.reposted_by %}
+                        <p class="reposted-info">
+                            <strong>{{ board.reposted_by }}</strong> さんがリツイートしました。
+                        </p>
+                    {% endif %}
+
                     <a href="{% url 'app:profile' board.user.id %}">
                     {% if board.user.profile.avatar %}
                     <img src="{{ board.user.profile.avatar.url }}" class="avatar">
@@ -69,13 +75,17 @@
                             {{ board.comment_count }}
                             
                             {% if user.is_authenticated %}
-                            <button
-                                type="button" 
-                                class="like-button btn {% if board.is_favorite %}btn-primary{% else %}btn-outline-primary{% endif %}" 
-                                data-board-id="{{ board.id }}">
-                                <i class="bi {% if board.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
-                                <span>{{ board.favorite_set.count }}</span>
-                            </button>
+                                <button
+                                    type="button" 
+                                    class="like-button btn {% if board.is_favorite %}btn-primary{% else %}btn-outline-primary{% endif %}" 
+                                    data-board-id="{{ board.id }}">
+                                    <i class="bi {% if board.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                    <span>{{ board.favorite_set.count }}</span>
+                                </button>
+
+                                <button class="btn {% if board.is_reposted %}btn-primary{% else %}btn-outline-primary{% endif %} repost-button" data-board-id="{{ board.id }}">
+                                    <i class="bi bi-arrow-repeat"></i> <span class="repost-count">{{ board.repost_count }}</span>
+                                </button>
                             {% endif %}
                         </div>
                     </div>

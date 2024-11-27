@@ -40,6 +40,11 @@
             更新：{{ board.updated_at|date:"Y/m/d H:i" }}</br>
             <!-- 閲覧数: {{ board.views }} -->
         </p>
+        {% if user.is_authenticated %}
+            <button class="btn {% if board.is_reposted %}btn-primary{% else %}btn-outline-primary{% endif %} repost-button" data-board-id="{{ board.id }}">
+                <i class="bi bi-arrow-repeat"></i> <span class="repost-count">{{ board.repost_count }}</span>
+            </button>
+        {% endif %}
         {% if request.user == board.user %}
         <div class="d-inline-block">
             <a href="{% url 'app:edit' pk=board.id %}" class="btn btn-primary">編集する</a>
@@ -111,6 +116,7 @@
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script src="{% static 'js/image_modal.js' %}"></script>
     <script src="{% static 'js/page_anime.js' %}"></script>
+    <script src="{% static 'js/AJAX.js' %}"></script>
 </body>
 </div>
 {% endblock %}    

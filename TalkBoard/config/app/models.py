@@ -24,6 +24,14 @@ class Board(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Repost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # リポストしたユーザー
+    original_post = models.ForeignKey(Board, related_name='reposts', on_delete=models.CASCADE)  # 元の投稿
+    created_at = models.DateTimeField(auto_now_add=True)  # リポストした日時
+
+    class Meta:
+        unique_together = ('user', 'original_post')  # 同じユーザーによる同じ投稿のリポストは一度だけ
 
 class Comment(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name="comments")
