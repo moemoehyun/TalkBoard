@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load elapsed_time %}
 
 {% block title %}プロフィール画面{% endblock %}
 
@@ -31,6 +32,63 @@
     </div>
     <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>
     </section>
-    <script src="{% static 'js/darkmode.js' %}"></script>
+
+    <section>
+        <ul class="list-unstyled">
+            {% for board in boards %}
+            <li class="mb-3">
+                <div class="card">
+                    <div class="card-header bg-light">
+            <tr>
+                <td scope="col">
+                    <a href="{% url 'app:profile' board.user.id %}">
+                    {% if board.user.profile.avatar %}
+                    <img src="{{ board.user.profile.avatar.url }}" class="avatar">
+                    {% else %}
+                    <img src="/static/images/blank_avatar.png" class="avatar">
+                    {% endif %}
+                </a>
+                    <a>{{ board.user }}<a>
+                    <a>{{ board.created_at|elapsed_time }}</a>
+                </td>
+                        <div class="card-body">
+                        <p class="card-text">
+                                <p>
+                                    <a href="{% url 'app:show' pk=board.id %}">{{ board.title }}</a>
+                                </p>
+                                <p>
+                                    {% if board.image %}
+                                        <div class="index_image-container">
+                                            <img src="{{ board.image.url }}" alt="{{ board.title }}">
+                                        </div>
+                                    {% endif %}
+                                </p>
+                        </p>
+                        </div>
+                        <div class="card-footer">
+                            <img src="{% static 'images/coments_icon.png' %}" alt="アイコン" width="28">
+                            {{ board.comment_count }}
+                            
+                            {% if user.is_authenticated %}
+                            <button
+                                type="button" 
+                                class="like-button btn {% if board.is_favorite %}btn-primary{% else %}btn-outline-primary{% endif %}" 
+                                data-board-id="{{ board.id }}">
+                                <i class="bi {% if board.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                <span>{{ board.favorite_set.count }}</span>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="text-muted">投稿はまだありません。</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <<script src="{% static 'js/darkmode.js' %}"></script>
+    <script src="{% static 'js/applyResponsiveDesign.js' %}"></script>
+    <script src="{% static 'js/page_anime.js' %}"></script>
+    <script src="{% static 'js/AJAX.js' %}"></script>
 </body>
 {% endblock %}

@@ -35,7 +35,6 @@ from io import BytesIO
 from django.urls import reverse
 import requests
 from django.http import JsonResponse
-
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -127,14 +126,49 @@ def signup(request):
 # def profile(request):
 #     user = request.user
 #     return render(request, "accounts/profile.html", {"user": user})
+# @login_required
+# def profile(request, user_id=None):
+#     user = request.user
+
+#     # 自分の投稿に、お気に入りの有無とコメント数を含めて取得
+#     boards = (
+#         user.boards.annotate(
+#             is_favorite=Count("favorite", filter=Q(favorite__user=user)),
+#             comment_count=Count("comments"),
+#         )
+#         .order_by("-updated_at")
+#     )
+#     # 特定のユーザー情報を取得
+#     if user_id == None:
+#         profile_user = profile.user
+#     else:
+#         profile_user = get_object_or_404(User, id=user_id)
+#     return render(request, "accounts/profile.html", {"profile_user": profile_user, "logged_in_user": request.user, "boards": boards})
 @login_required
 def profile(request, user_id=None):
+    user = request.user
+
     # 特定のユーザー情報を取得
-    if user_id == None:
-        profile_user = request.user
+    if user_id is None:
+        profile_user = user  # 自分のプロフィール情報
     else:
-        profile_user = get_object_or_404(User, id=user_id)
-    return render(request, "accounts/profile.html", {"profile_user": profile_user, "logged_in_user": request.user})
+        profile_user = get_object_or_404(User, id=user_id)  # 他ユーザーのプロフィール情報
+
+    # 自分または指定したユーザーの投稿に、お気に入りの有無とコメント数を含めて取得
+    boards = (
+        Board.objects.filter(user=profile_user)
+        .annotate(
+            is_favorite=Count("favorite", filter=Q(favorite__user=user)),  # 現在のユーザーのお気に入り状態
+            comment_count=Count("comments"),
+        )
+        .order_by("-updated_at")
+    )
+
+    return render(request, "accounts/profile.html", {
+        "profile_user": profile_user,
+        "logged_in_user": request.user,
+        "boards": boards
+    })
 
 def activate(request, uidb64, token):
     try:

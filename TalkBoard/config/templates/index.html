@@ -14,7 +14,6 @@
     </div> -->
 
     <section>
-    <h2>グローバルの投稿</h2>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
     <div class="col-md-3">
         <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
@@ -30,6 +29,7 @@
         <button type="submit" class="btn btn-light">🔍</button>
         </div>
     </form>
+    <h2>🌎グローバルの投稿</h2>
 
 
     <section>
@@ -81,7 +81,7 @@
                     </div>
                 </li>
             {% empty %}
-                <li class="text-muted">コメントはまだありません。</li>
+                <li class="text-muted">投稿はまだありません。</li>
             {% endfor %}
         </ul>
     </section>
