@@ -23,14 +23,20 @@
                 <p class="card-text"><p>メールアドレス：{{ logged_in_user.email }}</p></p>
                 </div>
                 <div class="card-footer">
-                    <a href="{% url 'app:edit_profile' %}" class="btn btn-primary">プロフィール編集</a>
+                    <form action="{% url 'app:edit_profile' %}" method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">プロフィール編集</button>
+                    </form>
                 </div>
             </div>
             {% endif %}
 
         </div>
     </div>
-    <a href="{% url 'app:index' %}" class="btn btn-primary">一覧に戻る</a>
+    <form action="{% url 'app:index' %}" method="POST" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">一覧に戻る</button>
+    </form>
     </section>
 
     <section>

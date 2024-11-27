@@ -82,10 +82,23 @@ def edit_profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('app:profile', user_id=request.user.id)
+            messages.success(request, "プロフィールが更新されました！")
+            return redirect('app:edit_profile')  # 編集画面に留まる
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'accounts/edit_profile.html', {'form': form})
+
+# @login_required
+# def edit_profile(request):
+#     profile = request.user.profile  # ログイン中のユーザーのプロフィールを取得
+#     if request.method == "POST":
+#         form = ProfileForm(request.POST, request.FILES, instance=profile)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('app:profile', user_id=request.user.id)
+#     else:
+#         form = ProfileForm(instance=profile)
+#     return render(request, 'accounts/edit_profile.html', {'form': form})
 
 #ログアウト
 def logout_view(request):
