@@ -89,7 +89,7 @@
                                 {{ comment.user.username }} - {{ comment.created_at|date:"Y/m/d H:i"}}
                         </div>
                         <div class="card-body">
-                        <p class="card-text">{{ comment.content }}</p>
+                        <p class="card-text">{{ comment.content|linebreaks }}</p>
                         </div>
                         <div class="card-footer">
                             {% if request.user == comment.user %}
