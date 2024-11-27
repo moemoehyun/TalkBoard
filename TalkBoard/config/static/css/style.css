@@ -270,3 +270,18 @@ video{
 form {
     display: inline;
 }
+
+
+.fixed-buttons {
+    position: fixed;
+    bottom: 20px; /* 下からの距離 */
+    right: 20px; /* 右からの距離 */
+    z-index: 1000; /* 他の要素より上に表示 */
+}
+
+.fixed-buttons .btn {
+    display: block; /* ボタンを縦並びにする */
+    margin-bottom: 10px; /* ボタン同士の間隔 */
+    width: 150px; /* ボタンの幅を統一 */
+    text-align: center; /* ボタンのテキストを中央揃え */
+}

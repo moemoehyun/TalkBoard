@@ -2,7 +2,7 @@
 {% load elapsed_time %}
 {% load static %}
 
-{% block title %}全ての投稿一覧{% endblock %}
+{% block title %}ブックマークした投稿{% endblock %}
 
 {% block content %}
 <div id="content">
@@ -14,7 +14,7 @@
     </div> -->
 
     <section>
-    <h2>グローバルの投稿</h2>
+    <h2>ブックマークした投稿</h2>
     <form method="GET" action="{% url 'app:search' %}" class="d-flex flex-row mb-3">
     <div class="col-md-3">
         <input type="text" name="query" id="id_query" class="form-control" placeholder="検索">
@@ -85,9 +85,11 @@
             {% endfor %}
         </ul>
     </section>
+    <div class="fixed-buttons">
     <a href="{% url 'app:index' %}" class="btn btn-primary">グローバル</a>
     <a href="{% url 'app:my_boards' %}" class="btn btn-primary">自分の投稿</a>
     <a href="{% url 'app:favorite_boards' %}" class="btn btn-primary">ブックマーク</a>
+    </div>
     </section>
 
     <!-- ぺージネーションのリンク表示 -->
