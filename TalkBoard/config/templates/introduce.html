@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}免責事項{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イントロデュース</title>
+</head>
+<body>
+    <form action="{% url 'app:index' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">戻る</button>
+    </form>
+    <h2>イントロデュース</h2>
+    <a>このアプリはどこかの大学生が趣味で開発しているSNSです。
+    </a>
+
+    <h2>アップデート予定</h2>
+    <p>・リポストが優先されて上に表示される問題の修正</p>
+    <p>・ユーザープロフィールにbioを導入する</p>
+
+    <h2>アップデート情報</h2>
+    <a>2024/11/28このページは作られました。以降のアップデート情報はここに記述いたします。
+    </a>
+
+</body>
+</html>
+{% endblock %}

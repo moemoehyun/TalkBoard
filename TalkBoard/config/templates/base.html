@@ -20,7 +20,9 @@
         <div class="container">
             <div class="pt-3 pb-1 mb-2 text-white d-flex justify-content-between flex-wrap">
                 <div class="logo-screen">
-                    <img src="{% static 'images/icon_andicon.png' %}" alt="Logo" width="180" class="logo" id="logo">
+                    <a href="{% url 'app:introduce' %}">
+                        <img src="{% static 'images/icon_andicon.png' %}" alt="Logo" width="180" class="logo" id="logo">
+                    </a>
                   </div>
             <!-- <h1 class="display-4">TalkBoard</h1> -->
             {% if user.is_authenticated %}

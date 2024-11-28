@@ -559,3 +559,6 @@ def disclaimer(request):
 
 def privacypolicy(request):
     return render(request, "privacypolicy.html")
+
+def introduce(request):
+    return render(request, "introduce.html")
