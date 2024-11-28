@@ -29,7 +29,7 @@ from django.dispatch import receiver
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.db.models import Value, BooleanField
-from django.db.models import Count, Q, Exists, OuterRef, Subquery
+from django.db.models import Count, Q, F, Exists, OuterRef, Subquery
 from PIL import Image
 from io import BytesIO
 from django.urls import reverse
@@ -37,6 +37,7 @@ import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Repost
+from itertools import chain
 
 # Create your views here.
 @login_required
@@ -296,29 +297,70 @@ def toggle_favorite(request, board_id):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+from itertools import chain
+from django.db.models import Q, F
+
 @login_required
 def index(request):
     user = request.user
 
-    boards_query = Board.objects.annotate(
+    # 投稿を取得
+    posts = Board.objects.annotate(
         is_favorite=Count("favorite", filter=Q(favorite__user=user)),
         comment_count=Count("comments"),
         repost_count=Count("reposts"),
         is_reposted=Exists(
             Repost.objects.filter(user=user, original_post=OuterRef("id"))
         ),
-        reposted_by=Subquery(
-            Repost.objects.filter(original_post=OuterRef("id"))
-            .order_by("-created_at")  # 最新のリポストユーザーを取得
-            .values("user__username")[:1]
-        ),
-    ).order_by("-is_reposted", "-updated_at")  # リポストを優先表示
+    ).order_by("-created_at")
 
-    paginator = Paginator(boards_query, 10)
+    # リポストを取得
+    reposts = Repost.objects.select_related("original_post").annotate(
+        reposted_by=F("user__username"),
+        repost_created_at=F("reposted_at"),  # 別名を使用
+        is_favorite=Count("original_post__favorite", filter=Q(original_post__favorite__user=user)),
+        comment_count=Count("original_post__comments"),
+        repost_count=Count("original_post__reposts"),
+        is_reposted=Exists(
+            Repost.objects.filter(user=user, original_post=OuterRef("original_post__id"))
+        ),
+    )
+
+    # 投稿とリポストを統合してソート
+    combined_items = sorted(
+        chain(posts, reposts),
+        key=lambda item: getattr(item, "repost_created_at", item.created_at),  # 別名を考慮
+        reverse=True
+    )
+
+    paginator = Paginator(combined_items, 10)
     page_number = request.GET.get("page")
     boards = paginator.get_page(page_number)
 
     return render(request, "index.html", {"boards": boards})
+# @login_required
+# def index(request):
+#     user = request.user
+
+#     boards_query = Board.objects.annotate(
+#         is_favorite=Count("favorite", filter=Q(favorite__user=user)),
+#         comment_count=Count("comments"),
+#         repost_count=Count("reposts"),
+#         is_reposted=Exists(
+#             Repost.objects.filter(user=user, original_post=OuterRef("id"))
+#         ),
+#         reposted_by=Subquery(
+#             Repost.objects.filter(original_post=OuterRef("id"))
+#             .order_by("-created_at")  # 最新のリポストユーザーを取得
+#             .values("user__username")[:1]
+#         ),
+#     ).order_by("-is_reposted", "-updated_at")  # リポストを優先表示
+
+#     paginator = Paginator(boards_query, 10)
+#     page_number = request.GET.get("page")
+#     boards = paginator.get_page(page_number)
+
+#     return render(request, "index.html", {"boards": boards})
 
 @login_required
 def my_boards(request):

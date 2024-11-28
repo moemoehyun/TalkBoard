@@ -31,8 +31,82 @@
     </form>
     <h2>🌎グローバルの投稿</h2>
 
-
     <section>
+        <ul class="list-unstyled">
+            {% for board in boards %}
+            <li class="mb-3">
+                <div class="card">
+                    <!-- ヘッダー -->
+                    <div class="card-header bg-light">
+                        <!-- リポスト情報 -->
+                        {% if board.reposted_by %}
+                            <p class="reposted-info">
+                                <strong>{{ board.reposted_by }}</strong> さんがリポストしました。
+                            </p>
+                        {% endif %}
+    
+                        <!-- ユーザー情報 -->
+                        <a href="{% url 'app:profile' board.user.id %}">
+                            {% if board.user.profile.avatar %}
+                                <img src="{{ board.user.profile.avatar.url }}" class="avatar" alt="ユーザーアイコン">
+                            {% else %}
+                                <img src="/static/images/blank_avatar.png" class="avatar" alt="デフォルトアイコン">
+                            {% endif %}
+                        </a>
+                        <span>
+                            <a href="{% url 'app:profile' board.user.id %}">{{ board.user }}</a>
+                        </span>
+                        <span class="text-muted">{{ board.created_at|elapsed_time }}</span>
+                    </div>
+    
+                    <!-- 本文 -->
+                    <div class="card-body">
+                        <p class="card-text">
+                            <a href="{% url 'app:show' pk=board.id %}" class="text-decoration-none">
+                                {{ board.title }}
+                            </a>
+                        </p>
+                        {% if board.image %}
+                            <div class="index_image-container">
+                                <img src="{{ board.image.url }}" alt="{{ board.title }}" class="img-fluid">
+                            </div>
+                        {% endif %}
+                    </div>
+    
+                    <!-- フッター -->
+                    <div class="card-footer">
+                        <img src="{% static 'images/coments_icon.png' %}" alt="コメントアイコン" width="28">
+                        {{ board.comment_count }}
+    
+                        {% if user.is_authenticated %}
+                            <!-- お気に入りボタン -->
+                            <button
+                                type="button"
+                                class="like-button btn {% if board.is_favorite %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                                data-board-id="{{ board.id }}"
+                            >
+                                <i class="bi {% if board.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                <span>{{ board.favorite_set.count }}</span>
+                            </button>
+    
+                            <!-- リポストボタン -->
+                            <button
+                                class="btn {% if board.is_reposted %}btn-primary{% else %}btn-outline-primary{% endif %} repost-button"
+                                data-board-id="{{ board.id }}"
+                            >
+                                <i class="bi bi-arrow-repeat"></i> 
+                                <span class="repost-count">{{ board.repost_count }}</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            {% empty %}
+                <li class="text-muted">投稿はまだありません。</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <!-- <section>
         <ul class="list-unstyled">
             {% for board in boards %}
             <li class="mb-3">
@@ -94,7 +168,7 @@
                 <li class="text-muted">投稿はまだありません。</li>
             {% endfor %}
         </ul>
-    </section>
+    </section> -->
 
 
 
