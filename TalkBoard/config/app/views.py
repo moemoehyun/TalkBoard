@@ -79,13 +79,13 @@ def save_profile(sender, instance, **kwargs):
 def edit_profile(request):
     profile = request.user.profile  # ログイン中のユーザーのプロフィールを取得
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "プロフィールが更新されました！")
             return redirect('app:edit_profile')  # 編集画面に留まる
     else:
-        form = ProfileForm(instance=profile)
+        form = ProfileForm(instance=profile, user=request.user)
     return render(request, 'accounts/edit_profile.html', {'form': form})
 
 # @login_required

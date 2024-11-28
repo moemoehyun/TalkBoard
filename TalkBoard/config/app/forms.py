@@ -12,9 +12,31 @@ from .models import Profile
 #         fields = ["title", "content"]
 
 class ProfileForm(forms.ModelForm):
+    username = forms.CharField(
+        max_length=20,
+        required=True,
+        label="ユーザー名",
+        help_text="20文字以内で入力してください",
+    )
+
     class Meta:
         model = Profile
-        fields = ['avatar']
+        fields = ['avatar']  # Profileモデルのフィールドを指定
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # ユーザーオブジェクトを受け取る
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['username'].initial = user.username  # ユーザー名の初期値を設定
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        user = profile.user
+        user.username = self.cleaned_data['username']  # ユーザー名を更新
+        if commit:
+            user.save()
+            profile.save()
+        return profile
 
 class BoardForm(forms.ModelForm):
     title = forms.CharField(
