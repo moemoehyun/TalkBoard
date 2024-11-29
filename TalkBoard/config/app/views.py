@@ -81,9 +81,13 @@ def edit_profile(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
-            form.save()
-            messages.success(request, "プロフィールが更新されました！")
-            return redirect('app:edit_profile')  # 編集画面に留まる
+            # 送信されたフィールドのみ更新
+            if 'avatar' in form.cleaned_data and form.cleaned_data['avatar']:
+                profile.avatar = form.cleaned_data['avatar']
+            if 'user_name' in form.cleaned_data and form.cleaned_data['user_name']:
+                profile.user_name = form.cleaned_data['user_name']
+            profile.save()
+            return redirect('app:profile', user_id=request.user.id)
     else:
         form = ProfileForm(instance=profile, user=request.user)
     return render(request, 'accounts/edit_profile.html', {'form': form})
